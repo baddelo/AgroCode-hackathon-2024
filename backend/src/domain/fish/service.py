@@ -2,6 +2,7 @@ from typing import List
 
 from src.domain.fish.dto import FishCreateDTO, FishCreateResponseDTO
 from src.domain.fish.exception import FISH_ID_OVERLAP_EXCEPTION
+from src.domain.fish.dal import FishDAO
 
 
 async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishCreateResponseDTO]:
