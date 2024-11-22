@@ -103,10 +103,10 @@ class FishDAO:
             )
         else:
             average_height = sum(heights) / len(heights)
-            height=ParameterLimitDTO(
+            height = ParameterLimitDTO(
                 min=average_height*0.5,
                 max=average_height*2
-            ),
+            )
         weights = [fish.weight for fish in group.fishes]
         if len(weights) == 0:
             weight = ParameterLimitDTO(
