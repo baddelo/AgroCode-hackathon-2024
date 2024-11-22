@@ -6,6 +6,7 @@ from src.domain.abc.dto import ABCDTO
 
 class Fish(ABCDTO):
     id: str
+    height: float | None
     weight: float | None
     length: float | None
     thickness: float | None
