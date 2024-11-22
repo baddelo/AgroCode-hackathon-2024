@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 
-from beanie import SortDirection
 from fastapi import FastAPI, APIRouter
+from starlette.middleware.cors import CORSMiddleware
 
 from src.config.backend import BACKEND_CONFIG
 from src.database.mongo.model import init_models
@@ -26,3 +26,13 @@ async def lifespan(app_: FastAPI):
 
 
 app = FastAPI(**BACKEND_CONFIG.init_kwargs(), lifespan=lifespan)
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
