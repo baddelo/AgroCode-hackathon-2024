@@ -57,6 +57,6 @@ class FishGetDTO(ABCDTO):
     egg_weight: float | None = Field(None)
 
 
-class FiltersDTO(ABCDTO):
+class OrdersDTO(ABCDTO):
     direction: Literal['ASC', 'DESC']
     field: Literal['weight', 'length', 'thickness', 'eggs_weight', 'egg_weight', 'height']

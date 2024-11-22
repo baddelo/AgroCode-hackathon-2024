@@ -1,6 +1,8 @@
 from typing import List
 
-from src.domain.fish.dto import FishCreateDTO, FiltersDTO, FishGetDTO
+from pymongo import ASCENDING, DESCENDING
+
+from src.domain.fish.dto import FishCreateDTO, OrdersDTO, FishGetDTO
 
 from src.domain.fish.model import Group
 from src.domain.fish.model import Fish
@@ -29,10 +31,39 @@ class FishDAO:
             self,
             offset: int,
             limit: int,
-            orders: List[FiltersDTO]
+            orders: List[OrdersDTO]
     ) -> List[FishGetDTO]:
-        group = await Group.find_all().to_list()
-        print(f'{group = }')
+        sort_criteria = []
+        for order in orders:
+            sort_direction = ASCENDING if order.direction == 'ASC' else DESCENDING
+            sort_criteria.append((order.field, sort_direction))
+
+        group = await Group.find_one(Group.id == 0)
+
+        if not group:
+            return []
+
+        sorted_fishes = sorted(
+            group.fishes,
+            key=lambda fish: tuple(
+                getattr(fish, order.field) or 0 for order in orders
+            ),
+            reverse=any(order.direction == 'DESC' for order in orders)
+        )
+
+        paginated_fishes = sorted_fishes[offset - 1:offset - 1 + limit]
+
+        return [
+            FishGetDTO(
+                id=fish.id,
+                weight=fish.weight,
+                length=fish.length,
+                thickness=fish.thickness,
+                eggs_weight=fish.eggs_weight,
+                egg_weight=fish.egg_weight
+            ) for fish in paginated_fishes
+        ]
+
 
     async def get_parameters_limits(self) -> FishParametersLimitsDTO | None:
         group = await Group.find_one(Group.id == 0)
