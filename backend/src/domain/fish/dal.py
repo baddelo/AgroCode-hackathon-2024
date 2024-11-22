@@ -57,6 +57,7 @@ class FishDAO:
             FishGetDTO(
                 id=fish.id,
                 weight=fish.weight,
+                height=fish.height,
                 length=fish.length,
                 thickness=fish.thickness,
                 eggs_weight=fish.eggs_weight,
