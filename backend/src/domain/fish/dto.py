@@ -1,4 +1,5 @@
 import uuid
+from typing import Literal
 
 from pydantic import Field, field_validator
 
@@ -41,3 +42,17 @@ class FishParametersLimitsDTO(ABCDTO):
     thickness: ParameterLimitDTO
     eggs_weight: ParameterLimitDTO
     egg_weight: ParameterLimitDTO
+
+
+class FishGetDTO(ABCDTO):
+    id: str = Field(...)
+    weight: float | None = Field(None)
+    length: float | None = Field(None)
+    thickness: float | None = Field(None)
+    eggs_weight: float | None = Field(None)
+    egg_weight: float | None = Field(None)
+
+
+class FiltersDTO(ABCDTO):
+    direction: Literal['ASC', 'DESC']
+    field: Literal['weight', 'length', 'thickness', 'eggs_weight', 'egg_weight']
