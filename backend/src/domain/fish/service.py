@@ -23,7 +23,7 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishCreateResp
     ]
 
 
-async def get_fishes_parameters_limits() -> List[FishParametersLimitsDTO]:
+async def get_fishes_parameters_limits() -> FishParametersLimitsDTO | None:
     fishes_parameters_limits = await FishDAO().get_parameters_limits()
     return fishes_parameters_limits
 
@@ -34,4 +34,3 @@ async def get_fishes_list(offset: int, limit: int, orders: List[OrdersDTO]) -> L
         FishGetDTO.model_validate(fish)
         for fish in fishes
     ]
-
