@@ -8,6 +8,8 @@ from src.utils.routers_utils import include_routers
 
 @asynccontextmanager
 async def lifespan(app_: FastAPI):
+    await init_models()
+
     v1_routers = []
     v1_router = include_routers(APIRouter(prefix='/v1'), v1_routers)
     main_router = include_routers(APIRouter(prefix='/api'), (v1_router,))
