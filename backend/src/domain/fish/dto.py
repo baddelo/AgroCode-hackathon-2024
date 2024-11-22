@@ -59,4 +59,4 @@ class FishGetDTO(ABCDTO):
 
 class OrdersDTO(ABCDTO):
     direction: Literal['ASC', 'DESC']
-    field: Literal['weight', 'length', 'thickness', 'eggs_weight', 'egg_weight', 'height']
+    field: Literal['weight', 'height', 'length', 'thickness', 'eggs_weight', 'egg_weight', 'height']

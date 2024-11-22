@@ -24,7 +24,7 @@ services:
     ports:
       - ${MONGO_PORT}:${MONGO_PORT}
     volumes:
-      - mongo:/data/db
+      - mongo:/data
       - mongo-config:/data/configdb
     restart: always
 
