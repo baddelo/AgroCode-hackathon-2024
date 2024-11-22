@@ -23,8 +23,7 @@ class BackendConfig(BaseSettings):
 
         return {
             **addition,
-            'title': 'Meme',
-            'description': 'Тестовое задание',
+            'title': 'AgroCode-hackathon-2024',
             'debug': self.debug,
         }
 
