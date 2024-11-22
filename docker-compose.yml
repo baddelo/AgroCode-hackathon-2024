@@ -27,3 +27,7 @@ services:
       - mongo:/data/db
       - mongo-config:/data/configdb
     restart: always
+
+volumes:
+  mongo:
+  mongo-config:
