@@ -12,7 +12,7 @@ from src.domain.fish.model import Group
 @asynccontextmanager
 async def lifespan(app_: FastAPI):
     await init_models()
-    await Group(id=0, fishes=[], mother_group=None, father_group=None).save()
+    await Group(id=0, fishes=[], mother_group=None, father_group=None).create()
 
     from src.api.fishes.router import fishes_rest_v1
 
