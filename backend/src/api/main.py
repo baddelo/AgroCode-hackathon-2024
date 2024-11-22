@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, APIRouter
 
 from src.config.backend import BACKEND_CONFIG
+from src.database.mongo.model import init_models
 from src.utils.routers_utils import include_routers
 
 
