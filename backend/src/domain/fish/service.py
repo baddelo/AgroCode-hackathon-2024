@@ -7,6 +7,7 @@ from src.domain.fish.dto import (
     FishGetDTO, FiltersDTO
 )
 from src.domain.fish.exception import FISH_ID_OVERLAP_EXCEPTION
+from src.domain.fish.dal import FishDAO
 
 
 async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishCreateResponseDTO]:
