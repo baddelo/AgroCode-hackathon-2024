@@ -1,6 +1,6 @@
 from typing import List
 
-from src.domain.fish.dto import FishCreateDTO, FishCreateResponseDTO
+from src.domain.fish.dto import FishCreateDTO, FishCreateResponseDTO, FishParametersLimitsDTO, ParameterLimitDTO
 from src.domain.fish.exception import FISH_ID_OVERLAP_EXCEPTION
 from src.domain.fish.dal import FishDAO
 
@@ -16,3 +16,8 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishCreateResp
         FishCreateResponseDTO.model_validate(fish)
         for fish in fishes
     ]
+
+
+async def get_fishes_parameters_limits() -> List[FishParametersLimitsDTO]:
+    fishes_parameters_limits = await FishDAO().get_parameters_limits()
+    return fishes_parameters_limits
