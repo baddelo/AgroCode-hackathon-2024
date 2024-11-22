@@ -44,6 +44,6 @@ async def get_fishes_parameters_limits_endpoint() -> List[FishCreateResponseDTO]
 async def get_fishes_list_endpoint(
         offset: int = Query(1, ge=1),
         limit: int = Query(100, ge=1, le=1000),
-        filters: List[FiltersDTO] = Body(...),
+        orders: List[FiltersDTO] = Body(...),
 ) -> List[FishGetDTO]:
-    return await get_fishes_list(offset, limit, filters)
+    return await get_fishes_list(offset, limit, orders)
