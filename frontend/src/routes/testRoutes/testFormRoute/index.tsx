@@ -1,6 +1,6 @@
 function TestFormRoute() {
 	return (
-		<h1>Test Form Route</h1>
+		<h1 style={{ textAlign: 'center' }}>Test Form Route</h1>
 	);
 }
 

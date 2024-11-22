@@ -1,5 +1,5 @@
 function FormPage() {
-	return <h1>Form Page</h1>;
+	return <h1 style={{ textAlign: 'center' }}>Form Page</h1>;
 }
 
 export default FormPage;

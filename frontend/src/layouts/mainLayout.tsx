@@ -1,26 +1,56 @@
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
-import { Button } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Box, Typography } from '@mui/material';
 
 function MainLayout() {
 	const navigate = useNavigate();
-	const { pathname } = useLocation();
 
 	return (
 		<>
-			{
-				pathname !== '/' &&
-					<Button
-						sx={{ position: 'absolute', top: '10px', left: '10px' }}
-						onClick={() => navigate(-1)}
+			<Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+				<Box
+					sx={{
+						display: 'flex',
+						justifyContent: 'start',
+						alignItems: 'center',
+						gap: 1,
+						userSelect: 'none',
+						padding: '1rem'
+					}}
+				>
+					<Box
+						sx={{
+							display: 'flex',
+							justifyContent: 'start',
+							alignItems: 'center',
+							gap: 1,
+							userSelect: 'none',
+							cursor: 'pointer'
+						}}
+						onClick={() => navigate('/')}
 					>
-						<ArrowBackIcon />
-					</Button>
-			}
-			<div>
-				<Outlet />
-			</div>
+						<img
+							width={64}
+							height={64}
+							src='/logo.svg'
+							alt='logo'
+						/>
+						<Typography variant='h6' sx={{ fontWeight: 'bold' }}>
+							FISH HUNTER
+						</Typography>
+					</Box>
+				</Box>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						flex: 1
+					}}
+				>
+					<Outlet />
+				</Box>
+			</Box>
 		</>
 	);
 }

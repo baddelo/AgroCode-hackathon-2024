@@ -1,6 +1,6 @@
 function TestGraphRoute() {
 	return (
-		<h1>Test Graph Route</h1>
+		<h1 style={{ textAlign: 'center' }}>Test Graph Route</h1>
 	);
 }
 

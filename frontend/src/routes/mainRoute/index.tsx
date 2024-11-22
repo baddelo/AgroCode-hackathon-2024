@@ -7,7 +7,7 @@ function MainRoute() {
 
 	return (
 		<Box display='flex' flexDirection='column' alignItems='center' gap={2}>
-			<h1>Main Route</h1>
+			<h1 style={{ textAlign: 'center' }}>Main Route</h1>
 			<ButtonGroup>
 				<Button onClick={() => navigate('/form')}>Form</Button>
 				<Button onClick={() => navigate('/graph')}>Graph</Button>
