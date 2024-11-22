@@ -29,10 +29,9 @@ async def create_fishes_endpoint(
 
 @fishes_rest_v1.get(
     path='/parameters-limits',
-    status_code=status.HTTP_200_OK,
-    response_model=FishParametersLimitsDTO,
+    status_code=status.HTTP_200_OK
 )
-async def get_fishes_parameters_limits_endpoint() -> List[FishCreateResponseDTO]:
+async def get_fishes_parameters_limits_endpoint() -> FishParametersLimitsDTO | None:
     return await get_fishes_parameters_limits()
 
 

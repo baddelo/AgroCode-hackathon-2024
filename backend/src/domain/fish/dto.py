@@ -8,6 +8,7 @@ from src.domain.abc.dto import ABCDTO
 
 class FishCreateDTO(ABCDTO):
     id: str | None = Field(...)
+    height: float | None = Field(None, ge=0)
     weight: float | None = Field(None, ge=0)
     length: float | None = Field(None, ge=0)
     thickness: float | None = Field(None, ge=0)
@@ -24,6 +25,7 @@ class FishCreateDTO(ABCDTO):
 
 class FishCreateResponseDTO(ABCDTO):
     id: str = Field(...)
+    height: float | None = Field(None)
     weight: float | None = Field(None)
     length: float | None = Field(None)
     thickness: float | None = Field(None)
@@ -37,6 +39,7 @@ class ParameterLimitDTO(ABCDTO):
 
 
 class FishParametersLimitsDTO(ABCDTO):
+    height: ParameterLimitDTO
     weight: ParameterLimitDTO
     length: ParameterLimitDTO
     thickness: ParameterLimitDTO
@@ -46,6 +49,7 @@ class FishParametersLimitsDTO(ABCDTO):
 
 class FishGetDTO(ABCDTO):
     id: str = Field(...)
+    height: float | None = Field(None)
     weight: float | None = Field(None)
     length: float | None = Field(None)
     thickness: float | None = Field(None)
@@ -55,4 +59,4 @@ class FishGetDTO(ABCDTO):
 
 class FiltersDTO(ABCDTO):
     direction: Literal['ASC', 'DESC']
-    field: Literal['weight', 'length', 'thickness', 'eggs_weight', 'egg_weight']
+    field: Literal['weight', 'length', 'thickness', 'eggs_weight', 'egg_weight', 'height']
