@@ -65,10 +65,35 @@ class FishDAO:
         ]
 
 
-    async def get_parameters_limits(self) -> FishParametersLimitsDTO | None:
+    async def get_parameters_limits(self) -> FishParametersLimitsDTO:
         group = await Group.find_one(Group.id == 0)
         if len(group.fishes) == 0:
-            return None
+            return FishParametersLimitsDTO(
+                height=ParameterLimitDTO(
+                    min=0,
+                    max=10
+                ),
+                weight=ParameterLimitDTO(
+                    min=1,
+                    max=5
+                ),
+                length=ParameterLimitDTO(
+                    min=7,
+                    max=17
+                ),
+                thickness=ParameterLimitDTO(
+                    min=2,
+                    max=3
+                ),
+                eggs_weight=ParameterLimitDTO(
+                    min=1000,
+                    max=2000
+                ),
+                egg_weight=ParameterLimitDTO(
+                    min=70,
+                    max=100
+                )
+            )
         heights = [fish.height for fish in group.fishes]
         if len(heights) == 0:
             height = ParameterLimitDTO(
