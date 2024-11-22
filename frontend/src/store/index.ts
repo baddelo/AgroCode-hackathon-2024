@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import formSlice from '../features/from/reducer';
+import formSlice from '../features/form/reducer';
 import graphSlice from '../features/graph/reducer';
 
 
