@@ -24,9 +24,19 @@ services:
     ports:
       - ${MONGO_PORT}:${MONGO_PORT}
     volumes:
-      - mongo:/data
+      - ./mongo:/data/db
       - mongo-config:/data/configdb
     restart: always
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #   ports:
+  #     - '8080:80'
+  #   depends_on:
+  #     - mongo
+  #     - backend
+  #   restart: always
 
 volumes:
   mongo:
