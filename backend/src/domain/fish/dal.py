@@ -67,8 +67,9 @@ class FishDAO:
 
 
     async def get_parameters_limits(self) -> FishParametersLimitsDTO | None:
-        group = await Group.find_one(Group.id == 0)
-        if len(group.fishes) == 0:
+        groups = await Group.find().to_list()
+        fishes = [fish for group in groups for fish in group.fishes]
+        if len(fishes) == 0:
             return FishParametersLimitsDTO(
                 height=ParameterLimitDTO(
                     min=0,
@@ -99,7 +100,7 @@ class FishDAO:
         def get_average(field: str) -> ParameterLimitDTO:
             field_values = [
                 fish.__getattribute__(field)
-                for fish in group.fishes
+                for fish in fishes
                 if fish.__getattribute__(field) not in [0, None]
             ]
             if len(field_values) == 0:
