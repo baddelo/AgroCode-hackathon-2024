@@ -14,7 +14,7 @@ class FishDAO:
         self,
     ) -> set[str]:
         group = await Group.find_one(
-            Group.id == 0
+            Group.id == "0"
         )
         return set(fish.id for fish in group.fishes)
 
@@ -130,4 +130,13 @@ class FishDAO:
             thickness=thickness,
             eggs_weight=eggs_weight,
             egg_weight=egg_weight
+        )
+
+    async def get_by_id(self, group_id: str, fish_id: str) -> Fish | None:
+        group = await Group.find_one(Group.id == group_id)
+        if not group:
+            return None
+        return next(
+            (fish for fish in group.fishes if fish.id == fish_id),
+            None
         )
