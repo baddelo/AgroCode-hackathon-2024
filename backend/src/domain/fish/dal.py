@@ -19,10 +19,11 @@ class FishDAO:
         return set(fish.id for fish in group.fishes)
 
     async def create(
-        self,
-        data: List[FishCreateDTO]
+            self,
+            data: List[FishCreateDTO],
+            group_id: str,
     ) -> List[Fish]:
-        group = await Group.find_one(Group.id == "0")
+        group = await Group.find_one(Group.id == group_id)
         group.fishes.extend([Fish.model_validate(fish) for fish in data])
         await group.save()
         return group.fishes
@@ -31,6 +32,7 @@ class FishDAO:
             self,
             offset: int,
             limit: int,
+            group_id: str | None,
             orders: List[OrdersDTO]
     ) -> List[FishGetDTO]:
         sort_criteria = []
@@ -38,7 +40,10 @@ class FishDAO:
             sort_direction = ASCENDING if order.direction == 'ASC' else DESCENDING
             sort_criteria.append((order.field, sort_direction))
 
-        group = await Group.find_one(Group.id == 0)
+        if group_id is None:
+            group = await Group.find_one(Group.id == 0)
+        else:
+            group = await Group.find_one(Group.id == group_id)
 
         if not group:
             return []

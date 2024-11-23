@@ -27,7 +27,7 @@ class GroupDAO:
             self,
             offset: int,
             limit: int,
-            orders: List[GroupOrdersDTO]
+            orders: List[GroupOrdersDTO],
     ) -> List[GroupGetDTO]:
         sort_criteria = []
         for order in orders:
