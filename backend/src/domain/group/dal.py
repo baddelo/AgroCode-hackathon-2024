@@ -50,12 +50,8 @@ class GroupDAO:
         paginated_groups = sorted_groups[offset:limit]
 
         return [
-            GroupGetDTO(
-                id=group.id,
-                breed=group.breed,
-                sex=group.sex,
-                father_group=group.father_group,
-                mother_group=group.mother_group
+            GroupGetDTO.model_validate(
+                group
             )
             for group in paginated_groups
         ]

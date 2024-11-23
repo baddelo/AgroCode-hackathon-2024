@@ -27,7 +27,7 @@ class GroupOrdersDTO(ABCDTO):
 
 
 class GroupGetDTO(ABCDTO):
-    id: str = Field(...)
+    id: str = Field(..., validation_alias='_id')
     breed: str
     sex: str
     father_group: str | None = Field(None)
