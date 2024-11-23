@@ -122,3 +122,9 @@ class FishGetDTO(ABCDTO):
 class OrdersDTO(ABCDTO):
     direction: Literal['ASC', 'DESC']
     field: Literal['weight', 'height', 'length', 'thickness', 'eggs_weight', 'egg_weight', 'height']
+
+
+class HistoryDTO(ABCDTO):
+    id: str
+    mother_id: str | None = None
+    father_id: str | None = None
