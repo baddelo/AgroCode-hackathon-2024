@@ -44,9 +44,6 @@ async def get_fishes_parameters_limits_endpoint() -> FishParametersLimitsDTO:
     response_model=List[FishGetDTO],
 )
 async def get_fishes_list_endpoint(
-        page: int = Query(1, ge=1),
-        size: int = Query(100, ge=1, le=1000),
         group_id: str | None = Query(None),
-        orders: List[OrdersDTO] = Body([]),
 ) -> List[FishGetDTO]:
-    return await get_fishes_list(page, size, group_id, orders)
+    return await get_fishes_list(group_id)

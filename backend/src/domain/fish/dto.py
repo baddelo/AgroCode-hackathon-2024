@@ -73,6 +73,9 @@ class FishGetDTO(ABCDTO):
     otnosit_plodovitost: float | None = Field(None)
     index_reproduction: float | None = Field(None)
 
+    breed: str | None = Field(None)
+    sex: str | None = Field(None)
+
     @model_validator(mode='after')
     def after_validator(self) -> Self:
         if self.weight is not None and self.length is not None and self.length != 0:

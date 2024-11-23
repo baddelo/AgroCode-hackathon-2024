@@ -31,18 +31,7 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishGetDTO]:
             fishes_data[i].father_id = None
 
     fishes = await FishDAO().create(fishes_data)
-    return [
-        FishGetDTO(
-            id=fish.id,
-            weight=fish.weight,
-            length=fish.length,
-            height=fish.height,
-            thickness=fish.thickness,
-            eggs_weight=fish.eggs_weight,
-            egg_weight=fish.egg_weight,
-        )
-        for fish in fishes
-    ]
+    return fishes
 
 
 async def get_fishes_parameters_limits() -> FishParametersLimitsDTO:
@@ -50,20 +39,7 @@ async def get_fishes_parameters_limits() -> FishParametersLimitsDTO:
     return fishes_parameters_limits
 
 
-async def get_fishes_list(page: int, size: int, group_id: str | None, orders: List[OrdersDTO]) -> List[FishGetDTO]:
-    offset = (page - 1) * size
-    limit = offset + size
-    fishes = await FishDAO().get_list(offset, limit, group_id, orders)
-    return [
-        FishGetDTO(
-            id=fish.id,
-            weight=fish.weight,
-            length=fish.length,
-            height=fish.height,
-            thickness=fish.thickness,
-            eggs_weight=fish.eggs_weight,
-            egg_weight=fish.egg_weight,
-        )
-        for fish in fishes
-    ]
+async def get_fishes_list(group_id: str | None) -> List[FishGetDTO]:
+    fishes = await FishDAO().get_list(group_id)
+    return fishes
 
