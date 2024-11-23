@@ -71,6 +71,7 @@ class FishGetDTO(ABCDTO):
     thickness: float | None = Field(None)
     eggs_weight: float | None = Field(None)
     egg_weight: float | None = Field(None)
+    predict_proba: float | None = Field(None)
 
 
 class OrdersDTO(ABCDTO):
