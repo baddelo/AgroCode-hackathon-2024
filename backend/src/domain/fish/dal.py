@@ -51,7 +51,7 @@ class FishDAO:
             reverse=any(order.direction == 'DESC' for order in orders)
         )
 
-        paginated_fishes = sorted_fishes[(offset - 1) * limit:(offset - 1) * limit + limit]
+        paginated_fishes = sorted_fishes[offset: limit]
 
         return [
             FishGetDTO(
