@@ -46,6 +46,17 @@ class ParameterLimitDTO(ABCDTO):
     min: float | None = Field(None)
     max: float | None = Field(None)
 
+    @model_validator(mode='after')
+    def after_validator(self) -> Self:
+        digits = 4
+        if self.min is not None:
+            self.min = round(self.min, digits)
+
+        if self.max is not None:
+            self.max = round(self.max, digits)
+
+        return self
+
 
 class FishParametersLimitsDTO(ABCDTO):
     height: ParameterLimitDTO
@@ -78,28 +89,29 @@ class FishGetDTO(ABCDTO):
 
     @model_validator(mode='after')
     def after_validator(self) -> Self:
+        digits = 4
         if self.weight is not None and self.length is not None and self.length != 0:
-            self.k_upit = round(self.weight / pow(self.length, 3) * 100, 4)
+            self.k_upit = round(self.weight / pow(self.length, 3) * 100, digits)
 
         if self.thickness is not None and self.length is not None and self.length != 0:
-            self.i_tolsh = round(self.thickness / self.length * 100, 4)
+            self.i_tolsh = round(self.thickness / self.length * 100, digits)
 
         if self.height is not None and self.length is not None and self.length != 0:
-            self.i_visots = round(self.height / self.length * 100, 4)
+            self.i_visots = round(self.height / self.length * 100, digits)
 
         if self.eggs_weight is not None and self.weight is not None and self.weight != 0:
-            self.dolya_icry = round(self.eggs_weight / self.weight * 100, 4)
+            self.dolya_icry = round(self.eggs_weight / self.weight * 100, digits)
 
         if self.eggs_weight is not None and self.egg_weight is not None and self.egg_weight != 0:
-            self.work_plodovitost = round(self.eggs_weight / self.egg_weight, 4)
+            self.work_plodovitost = round(self.eggs_weight / self.egg_weight, digits)
 
         if self.work_plodovitost is not None and self.weight is not None and self.eggs_weight is not None:
             if ((self.weight - self.eggs_weight) / 1000) != 0:
-                self.otnosit_plodovitost = round((self.work_plodovitost * 1000) / ((self.weight - self.eggs_weight) / 1000), 4)
+                self.otnosit_plodovitost = round((self.work_plodovitost * 1000) / ((self.weight - self.eggs_weight) / 1000), digits)
 
         if self.eggs_weight is not None and self.weight is not None and self.eggs_weight is not None:
             if ((self.weight - self.eggs_weight) / 1000) != 0:
-                self.index_reproduction = round(self.eggs_weight / ((self.weight - self.eggs_weight) / 1000), 4)
+                self.index_reproduction = round(self.eggs_weight / ((self.weight - self.eggs_weight) / 1000), digits)
 
         return self
 
