@@ -6,7 +6,8 @@ export const useMyForm = () => {
 		control,
 		register,
 		handleSubmit,
-		formState: { errors }
+		formState: { errors },
+		...form
 	} = useForm<IForm>({
 		defaultValues: {
 			fishes: [
@@ -35,6 +36,7 @@ export const useMyForm = () => {
 		errors,
 		fields,
 		append,
-		remove
+		remove,
+		form
 	};
 };

@@ -48,8 +48,6 @@ export const FormList: FC<IFormListProps> = ({
 }) => {
 	const currentErrors = errors?.fishes?.[index];
 
-	console.log('c', currentErrors);
-
 	return (
 		<Box minWidth="300px" display="flex" flexDirection="column" gap="15px">
 			<IconButton
@@ -69,7 +67,7 @@ export const FormList: FC<IFormListProps> = ({
 				<InputLabel>Идентификатор</InputLabel>
 				<Input
 					type="number"
-					{...register(`fishes.${index}.id`, { required: true })}
+					{...register(`fishes.${index}.id`)}
 					error={Boolean(currentErrors?.id?.type)}
 				/>
 			</FormControl>

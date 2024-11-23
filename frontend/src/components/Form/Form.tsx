@@ -7,16 +7,28 @@ import { useMyForm } from './hooks';
 import { IFishLimit } from '../../types';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useAppDispatch } from '../../store';
+import { setFishes } from '../../features/table/reducer.ts';
 
 export const Form = () => {
 	const [fishLimit, setFishLimit] = useState<IFishLimit>(null);
 
-	const { register, control, handleSubmit, errors, fields, append, remove } =
-    useMyForm();
+	const dispatch = useAppDispatch();
 
-	const onSubmit: SubmitHandler<IForm> = ({ fishes }) => {
+	const {
+		register,
+		control,
+		handleSubmit,
+		errors,
+		fields,
+		append,
+		remove,
+		form
+	} = useMyForm();
+
+	const onSubmit: SubmitHandler<IForm> = async ({ fishes }) => {
 		const requestBody = fishes.map((fish) => ({
-			id: String(fish.id),
+			id: fish.id || null,
 			weight: Number(fish.weight),
 			length: Number(fish.length),
 			height: Number(fish.height),
@@ -25,14 +37,23 @@ export const Form = () => {
 			egg_weight: Number(fish.egg_weight)
 		}));
 
-		axios
-			.post('http://87.251.79.100:8080/api/v1/fishes', requestBody, {})
-			.then((res) => {
-				console.log('Успех', res.data);
-			})
-			.catch(() => {
-				toast.error('При отправки произошла ошибка');
-			});
+		try {
+			const { data } = await axios.post(
+				'http://87.251.79.100:8080/api/v1/fishes',
+				requestBody
+			);
+
+			dispatch(setFishes(data));
+
+			toast.success('Успешно отправлено');
+		} catch {
+			toast.error('При отправки произошла ошибка');
+		}
+	};
+
+	const onError = () => {
+		const formValues = form.getValues();
+		onSubmit(formValues);
 	};
 
 	const handleClickAddMore = () => {
@@ -63,7 +84,7 @@ export const Form = () => {
 	}, []);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<form onSubmit={handleSubmit(onSubmit, onError)}>
 			<Box display="flex" flexDirection="column" gap="15px">
 				<Box
 					display="flex"
