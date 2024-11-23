@@ -14,6 +14,9 @@ class FishCreateDTO(ABCDTO):
     thickness: float | None = Field(None, ge=0)
     eggs_weight: float | None = Field(None, ge=0)
     egg_weight: float | None = Field(None, ge=0)
+    group_id: str = Field(0)
+    father_id: str | None = Field(None)
+    mother_id: str | None = Field(None)
 
     @field_validator('id')
     @classmethod

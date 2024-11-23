@@ -16,6 +16,15 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishCreateResp
     if len(overlap_ids) > 0:
         raise FISH_ID_OVERLAP_EXCEPTION
 
+    for i, fish in enumerate(fishes_data):
+        mother = await FishDAO().get_by_id(fish.mother_id, fish.group_id)
+        if mother is None:
+            fishes_data[i].mother_id = None
+
+        father = await FishDAO().get_by_id(fish.father_id, fish.group_id)
+        if father is None:
+            fishes_data[i].father_id = None
+
     fishes = await FishDAO().create(fishes_data)
     return [
         FishCreateResponseDTO.model_validate(fish)
