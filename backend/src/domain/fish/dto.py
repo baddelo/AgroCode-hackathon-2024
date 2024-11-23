@@ -64,7 +64,6 @@ class FishGetDTO(ABCDTO):
     thickness: float | None = Field(None)
     eggs_weight: float | None = Field(None)
     egg_weight: float | None = Field(None)
-    predict_proba: float | None = Field(None)
 
     k_upit: float | None = Field(None)
     i_tolsh: float | None = Field(None)
@@ -76,6 +75,8 @@ class FishGetDTO(ABCDTO):
 
     breed: str | None = Field(None)
     sex: str | None = Field(None)
+
+    predict_proba: float | None = Field(None)
 
     @model_validator(mode='after')
     def after_validator(self) -> Self:

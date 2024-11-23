@@ -1,3 +1,5 @@
+import joblib
+import pandas as pd
 from typing import List
 
 from src.domain.fish.dto import (
@@ -31,6 +33,7 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishGetDTO]:
             fishes_data[i].father_id = None
 
     fishes = await FishDAO().create(fishes_data)
+    fishes = predict_fishes(fishes)
     return fishes
 
 
@@ -43,3 +46,50 @@ async def get_fishes_list(group_id: str | None) -> List[FishGetDTO]:
     fishes = await FishDAO().get_list(group_id)
     return fishes
 
+
+def predict_fishes(fishes: List[FishGetDTO]) -> List[float]:
+    forell_model = joblib.load('../models/forell.pkl')
+    lossos_model = joblib.load('../models/lossos.pkl')
+
+    for fish in fishes:
+        if fish.breed == 'Форель':
+            prob = forell_model.predict_proba(
+                pd.DataFrame(
+                    {
+                        'body_weight': [fish.weight],
+                        'smith_length': [fish.length],
+                        'roe_weight': [fish.weight],
+                        'roe_egg_weight': [fish.egg_weight],
+                        'condition_factor': [fish.k_upit],
+                        'roe_ratio_percent': [fish.dolya_icry],
+                        'working_fecundity': [fish.work_plodovitost],
+                        'relative_fecundity': [fish.otnosit_plodovitost],
+                        'reproductive_index': [fish.index_reproduction]
+                    }
+                )
+            )
+        elif fish.breed == 'Лосось':
+            prob = lossos_model.predict_proba(
+                pd.DataFrame(
+                    {
+                        'body_weight': [fish.weight],
+                        'smith_length': [fish.length],
+                        'roe_weight': [fish.weight],
+                        'body_height': [fish.height],
+                        'body_thickness': [fish.thickness],
+                        'thickness_index': [fish.i_tolsh],
+                        'height_index': [fish.i_visots],
+                        'roe_egg_weight': [fish.egg_weight],
+                        'condition_factor': [fish.k_upit],
+                        'roe_ratio_percent': [fish.dolya_icry],
+                        'working_fecundity': [fish.work_plodovitost],
+                        'relative_fecundity': [fish.otnosit_plodovitost],
+                        'reproductive_index': [fish.index_reproduction]
+                    }
+                )
+            )
+        else:
+            raise ValueError("Unknown breed (Лосось or Форель)")
+
+        fish.predict_proba = prob[0, 1]
+    return fishes
