@@ -26,6 +26,9 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishGetDTO]:
                 mother_fish = await FishDAO().get_by_id(group.mother_group.ref.id, fish.mother_id)
                 if mother_fish is None:
                     fishes_data[i].mother_id = None
+                mother_group = await GroupDAO().get_by_id(group.mother_group.ref.id)
+                if mother_group.sex != 'Ж':
+                    fishes_data[i].mother_id = None
             else:
                 fishes_data[i].mother_id = None
         else:
@@ -35,6 +38,9 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishGetDTO]:
             if group.father_group.ref.id is not None:
                 father_fish = await FishDAO().get_by_id(group.father_group.ref.id, fish.father_id)
                 if father_fish is None:
+                    fishes_data[i].father_id = None
+                father_group = await GroupDAO().get_by_id(group.father_group.ref.id)
+                if father_group.sex != 'М':
                     fishes_data[i].father_id = None
             else:
                 fishes_data[i].father_id = None
