@@ -18,7 +18,7 @@ class FishCreateDTO(ABCDTO):
     father_id: str | None = Field(None)
     mother_id: str | None = Field(None)
 
-    @field_validator('id')
+    @field_validator('id', mode='before')
     @classmethod
     def id_validator(cls, v: str | None) -> str:
         if v is None:
