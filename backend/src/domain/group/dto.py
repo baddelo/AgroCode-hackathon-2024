@@ -19,3 +19,16 @@ class GroupCreateDTO(ABCDTO):
         if v is None:
             return str(uuid.uuid4())
         return v
+
+
+class GroupOrdersDTO(ABCDTO):
+    direction: Literal['ASC', 'DESC']
+    field: Literal['id', 'breed', 'sex']
+
+
+class GroupGetDTO(ABCDTO):
+    id: str = Field(...)
+    breed: str
+    sex: str
+    father_group: str | None = Field(None)
+    mother_group: str | None = Field(None)
