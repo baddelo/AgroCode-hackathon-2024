@@ -36,7 +36,7 @@ function MainLayout() {
 							alt='logo'
 						/>
 						<Typography variant='h6' sx={{ fontWeight: 'bold' }}>
-							FISH HUNTER
+							FISH HUB
 						</Typography>
 					</Box>
 				</Box>

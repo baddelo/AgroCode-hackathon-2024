@@ -1,6 +1,6 @@
 from typing import List
 
-from src.domain.fish.dto import FishCreateDTO, FishGetDTO
+from src.domain.fish.dto import FishCreateDTO, FishGetDTO, HistoryDTO
 
 from src.domain.group.model import Group
 from src.domain.fish.model import Fish
@@ -178,3 +178,12 @@ class FishDAO:
             for fish in group.fishes:
                 if fish.id == fish_id:
                     return fish_id
+
+    async def get_history(self) -> List[HistoryDTO]:
+        groups = await Group.find_all().to_list()
+        response = []
+        for group in groups:
+            for fish in group.fishes:
+                response.append(HistoryDTO.model_validate(fish))
+        return response
+
