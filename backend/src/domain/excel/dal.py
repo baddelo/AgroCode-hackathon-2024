@@ -97,3 +97,40 @@ async def write_group_to_excel(group_id: str):
     workbook.save(file)
     return file
 
+
+async def write_generations_to_excel():
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = 'Родословная индивидуальная'
+    sheet.append(
+        [
+            'ID животного',
+            'ID самки',
+            'ID самца'
+        ]
+    )
+    groups = await Group.find_all().to_list()
+    fishes = [fish for group in groups for fish in group.fishes]
+    for fish in fishes:
+        sheet.append([
+            fish.id,
+            fish.mother_id,
+            fish.father_id,
+        ])
+    sheet = workbook.create_sheet(title='Родословная групповая')
+    sheet.append(
+        [
+            'ID группы',
+            'ID группы самок',
+            'ID группы самцов',
+        ]
+    )
+    for group in groups:
+        sheet.append([
+            group.id,
+            group.mother_group.ref.id,
+            group.father_group.ref.id,
+        ])
+    file = io.BytesIO()
+    workbook.save(file)
+    return file

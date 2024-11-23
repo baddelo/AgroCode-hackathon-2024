@@ -4,7 +4,7 @@ from typing import List, Annotated
 from fastapi import APIRouter, status, Body, Query, File
 from starlette.responses import StreamingResponse, Response
 
-from src.domain.excel.dal import read_group_from_excel, write_group_to_excel
+from src.domain.excel.dal import read_group_from_excel, write_group_to_excel, write_generations_to_excel
 
 excel_rest_v1 = APIRouter(
     tags=["Excel"],
@@ -25,7 +25,7 @@ async def upload_excel(
 
 
 @excel_rest_v1.get(
-    '/download',
+    '/download/by-group',
 )
 async def download_excel(group_id: str) -> Response:
     headers = {
@@ -36,3 +36,14 @@ async def download_excel(group_id: str) -> Response:
         file.getvalue(), headers=headers, media_type="application/octet-stream",
     )
 
+@excel_rest_v1.get(
+    '/download/generations',
+)
+async def download_generations_in_excel() -> Response:
+    headers = {
+        'Content-Disposition': f'attachment; filename="Pedigree.xlsx"'
+    }
+    file = await write_generations_to_excel()
+    return Response(
+        file.getvalue(), headers=headers, media_type="application/octet-stream",
+    )
