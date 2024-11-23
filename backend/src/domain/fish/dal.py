@@ -19,18 +19,28 @@ class FishDAO:
         return set(fish.id for fish in group.fishes)
 
     async def create(
-        self,
-        data: List[FishCreateDTO]
+            self,
+            data: List[FishCreateDTO],
     ) -> List[Fish]:
-        group = await Group.find_one(Group.id == "0")
-        group.fishes.extend([Fish.model_validate(fish) for fish in data])
-        await group.save()
-        return group.fishes
+        groups = await Group.find_all().to_list()
+        groups_map = {
+            group.id: group
+            for group in groups
+        }
+        fishes = []
+        for item in data:
+            group = groups_map.get(item.group_id)
+            fish = Fish.model_validate(item)
+            group.fishes.append(fish)
+            fishes.append(fish)
+            await group.save()
+        return fishes
 
     async def get_list(
             self,
             offset: int,
             limit: int,
+            group_id: str | None,
             orders: List[OrdersDTO]
     ) -> List[FishGetDTO]:
         sort_criteria = []
@@ -38,13 +48,23 @@ class FishDAO:
             sort_direction = ASCENDING if order.direction == 'ASC' else DESCENDING
             sort_criteria.append((order.field, sort_direction))
 
-        group = await Group.find_one(Group.id == 0)
+        if group_id is None:
+            fishes = []
+            [
+                fishes.extend(group.fishes)
+                for group in await Group.find_all().to_list()
+            ]
+        else:
+            group = await Group.find_one(Group.id == group_id)
+            if group is None:
+                return []
+            fishes = group.fishes
 
-        if not group:
+        if len(fishes) < 1:
             return []
 
         sorted_fishes = sorted(
-            group.fishes,
+            fishes,
             key=lambda fish: tuple(
                 getattr(fish, order.field) or 0 for order in orders
             ),
