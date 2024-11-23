@@ -31,3 +31,11 @@ class GroupDAO:
             GroupGetDTO.model_validate(group)
             for group in groups
         ]
+
+    async def get_raw_list(self) -> List[Group]:
+        groups = await Group.find_all().to_list()
+
+        if not groups:
+            return []
+
+        return groups

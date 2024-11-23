@@ -1,6 +1,7 @@
 import uuid
 from typing import Literal
 
+from beanie import Link
 from pydantic import Field, field_validator
 
 from src.domain.abc.dto import ABCDTO
@@ -32,3 +33,10 @@ class GroupGetDTO(ABCDTO):
     sex: str
     father_group: str | None = Field(None)
     mother_group: str | None = Field(None)
+
+    @field_validator('father_group', 'mother_group', mode='before')
+    @classmethod
+    def group_validator(cls, v: Link | None) -> str | None:
+        if isinstance(v, Link):
+            return v.ref.id
+        return v

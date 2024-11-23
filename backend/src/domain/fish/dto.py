@@ -76,6 +76,9 @@ class FishGetDTO(ABCDTO):
     eggs_weight: float | None = Field(None)
     egg_weight: float | None = Field(None)
 
+    mother_id: str | None = Field(None)
+    father_id: str | None = Field(None)
+
     k_upit: float | None = Field(None)
     i_tolsh: float | None = Field(None)
     i_visots: float | None = Field(None)

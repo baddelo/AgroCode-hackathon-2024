@@ -1,8 +1,6 @@
 from typing import List
 
-from pymongo import ASCENDING, DESCENDING
-
-from src.domain.fish.dto import FishCreateDTO, OrdersDTO, FishGetDTO
+from src.domain.fish.dto import FishCreateDTO, FishGetDTO
 
 from src.domain.group.model import Group
 from src.domain.fish.model import Fish
@@ -42,6 +40,9 @@ class FishDAO:
                     eggs_weight=fish.eggs_weight,
                     egg_weight=fish.egg_weight,
 
+                    father_id=fish.father_id,
+                    mother_id=fish.mother_id,
+
                     breed=group.breed,
                     sex=group.sex,
                 )
@@ -64,6 +65,9 @@ class FishDAO:
                     eggs_weight=fish.eggs_weight,
                     egg_weight=fish.egg_weight,
 
+                    father_id=fish.father_id,
+                    mother_id=fish.mother_id,
+
                     breed=group.breed,
                     sex=group.sex,
                 )
@@ -82,6 +86,9 @@ class FishDAO:
                     thickness=fish.thickness,
                     eggs_weight=fish.eggs_weight,
                     egg_weight=fish.egg_weight,
+
+                    father_id=fish.father_id,
+                    mother_id=fish.mother_id,
 
                     breed=group.breed,
                     sex=group.sex,
@@ -164,3 +171,10 @@ class FishDAO:
             (fish for fish in group.fishes if fish.id == fish_id),
             None
         )
+
+    async def get_by_fish_id(self, fish_id: str) -> str | None:
+        groups = await Group.find_all().to_list()
+        for group in groups:
+            for fish in group.fishes:
+                if fish.id == fish_id:
+                    return fish_id
