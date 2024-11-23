@@ -69,79 +69,59 @@ class FishDAO:
     async def get_parameters_limits(self) -> FishParametersLimitsDTO | None:
         group = await Group.find_one(Group.id == 0)
         if len(group.fishes) == 0:
-            return None
-        heights = [fish.height for fish in group.fishes]
-        if len(heights) == 0:
-            height = ParameterLimitDTO(
-                min=None,
-                max=None
+            return FishParametersLimitsDTO(
+                height=ParameterLimitDTO(
+                    min=0,
+                    max=10
+                ),
+                weight=ParameterLimitDTO(
+                    min=1,
+                    max=5
+                ),
+                length=ParameterLimitDTO(
+                    min=7,
+                    max=17
+                ),
+                thickness=ParameterLimitDTO(
+                    min=2,
+                    max=3
+                ),
+                eggs_weight=ParameterLimitDTO(
+                    min=1000,
+                    max=2000
+                ),
+                egg_weight=ParameterLimitDTO(
+                    min=70,
+                    max=100
+                )
             )
-        else:
-            average_height = sum(heights) / len(heights)
-            height=ParameterLimitDTO(
-                min=average_height*0.5,
-                max=average_height*2
-            ),
-        weights = [fish.weight for fish in group.fishes]
-        if len(weights) == 0:
-            weight = ParameterLimitDTO(
-                min=None,
-                max=None
-            )
-        else:
-            average_weight = sum(weights) / len(weights)
-            weight = ParameterLimitDTO(
-                min=average_weight*0.5,
-                max=average_weight*2
-            )
-        lengths = [fish.length for fish in group.fishes]
-        if len(lengths) == 0:
-            length = ParameterLimitDTO(
-                min=None,
-                max=None
-            )
-        else:
-            average_length = sum(lengths) / len(lengths)
-            length = ParameterLimitDTO(
-                min=average_length*0.5,
-                max=average_length*2
-            )
-        thicknesses = [fish.thickness for fish in group.fishes]
-        if len(thicknesses) == 0:
-            thickness = ParameterLimitDTO(
-                min=None,
-                max=None
-            )
-        else:
-            average_thickness = sum(thicknesses) / len(thicknesses)
-            thickness = ParameterLimitDTO(
-                min=average_thickness*0.5,
-                max=average_thickness*2
-            )
-        eggs_weights = [fish.eggs_weight for fish in group.fishes]
-        if len(eggs_weights) == 0:
-            eggs_weight = ParameterLimitDTO(
-                min=None,
-                max=None
-            )
-        else:
-            average_eggs_weight = sum(eggs_weights) / len(eggs_weights)
-            eggs_weight = ParameterLimitDTO(
-                min=average_eggs_weight*0.5,
-                max=average_eggs_weight*2
-            )
-        egg_weights = [fish.egg_weight for fish in group.fishes]
-        if len(egg_weights) == 0:
-            egg_weight = ParameterLimitDTO(
-                min=None,
-                max=None
-            )
-        else:
-            average_egg_weight = sum(egg_weights) / len(egg_weights)
-            egg_weight = ParameterLimitDTO(
-                min=average_egg_weight*0.5,
-                max=average_egg_weight*2
-            )
+
+        def get_average(field: str) -> ParameterLimitDTO:
+            field_values = [
+                fish.__getattribute__(field)
+                for fish in group.fishes
+                if fish.__getattribute__(field) not in [0, None]
+            ]
+            if len(field_values) == 0:
+                field_limits = ParameterLimitDTO(
+                    min=None,
+                    max=None
+                )
+            else:
+                average_value = sum(field_values) / len(field_values)
+                field_limits = ParameterLimitDTO(
+                    min=average_value * 0.5,
+                    max=average_value * 2
+                )
+            return field_limits
+
+        height = get_average('height')
+        weight = get_average('weight')
+        length = get_average('length')
+        thickness = get_average('thickness')
+        eggs_weight = get_average('eggs_weight')
+        egg_weight = get_average('egg_weight')
+
         return FishParametersLimitsDTO(
             height=height,
             weight=weight,
