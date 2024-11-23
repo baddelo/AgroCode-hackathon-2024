@@ -18,7 +18,7 @@ class FishCreateDTO(ABCDTO):
     father_id: str | None = Field(None)
     mother_id: str | None = Field(None)
 
-    @field_validator('id')
+    @field_validator('id', mode='before')
     @classmethod
     def id_validator(cls, v: str | None) -> str:
         if v is None:
@@ -89,6 +89,8 @@ class FishGetDTO(ABCDTO):
 
     breed: str | None = Field(None)
     sex: str | None = Field(None)
+
+    predict_proba: float | None = Field(None)
 
     @model_validator(mode='after')
     def after_validator(self) -> Self:
