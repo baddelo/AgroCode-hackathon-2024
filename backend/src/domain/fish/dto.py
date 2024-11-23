@@ -22,6 +22,22 @@ class FishCreateDTO(ABCDTO):
             return str(uuid.uuid4())
         return v
 
+    @field_validator(
+        'height',
+        'weight',
+        'length',
+        'thickness',
+        'eggs_weight',
+        'egg_weight',
+        mode='before'
+    )
+    @classmethod
+    def parameter_validator(cls, v: float | None) -> float | None:
+        if v is None or v == 0:
+            return None
+        else:
+            return v
+
 
 class FishCreateResponseDTO(ABCDTO):
     id: str = Field(...)
