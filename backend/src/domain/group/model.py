@@ -9,6 +9,6 @@ class Group(Document):
     id: str
     breed: Literal['Лосось', 'Форель']
     sex: Literal['М', 'Ж']
-    fishes: List[Fish]
+    fishes: List[Fish] = []
     father_group: Link['Group'] | None
     mother_group: Link['Group'] | None
