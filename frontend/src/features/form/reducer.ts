@@ -1,11 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IFormGroup } from '../../types';
+
+const initialState = {
+	groupsFish: [] as IFormGroup[],
+	optionsGroupsFish: [] as { value: string; text: string }
+};
 
 const formSlice = createSlice({
 	name: 'form',
-	initialState: {},
-	reducers: {}
+	initialState,
+	reducers: {
+		setGroupsFish: (state, { payload }) => {
+			state.groupsFish = payload;
+		},
+
+		setOptionsGroupsFish: (state, { payload }) => {
+			state.optionsGroupsFish = [
+				{ value: 'not', text: 'Не выбран' },
+				...payload
+			];
+		}
+	}
 });
 
-export const graphActions = formSlice.actions;
-
-export default formSlice.reducer;
+export const { setGroupsFish, setOptionsGroupsFish } = formSlice.actions;
+export const formReducer = formSlice.reducer;

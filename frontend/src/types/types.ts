@@ -33,4 +33,15 @@ export interface IFishes {
   thickness: number | null;
   eggs_weight: number | null;
   egg_weight: number | null;
+  group_id: string | null;
+  father_group: string | null;
+  mother_group: string | null;
+}
+
+export interface IFormGroup {
+  id: string | null;
+  breed: 'Лосось' | 'Форель';
+  sex: 'М' | 'Ж';
+  father_group: string | null;
+  mother_group: string | null;
 }

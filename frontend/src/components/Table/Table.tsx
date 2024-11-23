@@ -1,13 +1,10 @@
 import { FC, useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box, Button } from '@mui/material';
-// import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { setFishes } from '../../features/table/reducer.ts';
-
-// interface ITableProps {}
 
 const columns: GridColDef[] = [
 	{ field: 'id', headerName: 'ID', type: 'string', width: 110 },
@@ -36,6 +33,79 @@ const columns: GridColDef[] = [
 		headerName: 'Вес икры',
 		type: 'number',
 		width: 110
+	},
+
+	{
+		field: 'mother_id',
+		headerName: 'ID самки',
+		type: 'string',
+		width: 110
+	},
+	{
+		field: 'father_id',
+		headerName: 'ID самца',
+		type: 'string',
+		width: 110
+	},
+	{
+		field: 'k_upit',
+		headerName: 'К упитанности',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'i_tolsh',
+		headerName: 'И толщины',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'i_visots',
+		headerName: 'И высоты',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'dolya_icry',
+		headerName: 'Доля икры',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'work_plodovitost',
+		headerName: 'Рабочая плодовитость',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'otnosit_plodovitost',
+		headerName: 'Относительная плодовитость',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'index_reproduction',
+		headerName: 'Индекс репродуктивности',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'breed',
+		headerName: 'Порода',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'sex',
+		headerName: 'Пол',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'predict_proba',
+		headerName: 'Вер. плем. потомства',
+		type: 'number',
+		width: 180
 	}
 ];
 
@@ -48,7 +118,7 @@ export const Table: FC = () => {
 
 	useEffect(() => {
 		axios
-			.put('http://87.251.79.100:8080/api/v1/fishes')
+			.get('http://87.251.79.100:8080/api/v1/fishes')
 			.then(({ data }) => {
 				dispatch(setFishes(data));
 			})
@@ -59,7 +129,7 @@ export const Table: FC = () => {
 
 	return (
 		<>
-			<Box width="800px">
+			<Box padding="16px 32px" width="100%">
 				<DataGrid
 					rows={fishesStore}
 					columns={columns}
@@ -73,17 +143,14 @@ export const Table: FC = () => {
 						}
 					}}
 					pageSizeOptions={[5, 10]}
-					// onPaginationModelChange={(model: GridPaginationModel) => {
-					// 	handleClickPagination(model.page);
-					// }}
 				/>
 			</Box>
 			<Button
-				href='http://87.251.79.100:8080/api/v1/excel/download'
-				variant='contained'
+				href="http://87.251.79.100:8080/api/v1/excel/download"
+				variant="contained"
 				sx={{ mt: 2 }}
 			>
-				Скачать таблицу
+        Скачать таблицу
 			</Button>
 		</>
 	);

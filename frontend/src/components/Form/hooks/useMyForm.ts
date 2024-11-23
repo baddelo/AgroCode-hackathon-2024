@@ -9,6 +9,7 @@ export const useMyForm = () => {
 		formState: { errors },
 		...form
 	} = useForm<IForm>({
+		mode: 'onChange',
 		defaultValues: {
 			fishes: [
 				{
@@ -18,7 +19,10 @@ export const useMyForm = () => {
 					height: null,
 					thickness: null,
 					eggs_weight: null,
-					egg_weight: null
+					egg_weight: null,
+					group_id: 'not',
+					father_group: 'not',
+					mother_group: 'not'
 				}
 			]
 		}

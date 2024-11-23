@@ -5,6 +5,8 @@ import {
 	IconButton,
 	Input,
 	InputLabel,
+	MenuItem,
+	Select,
 	Typography
 } from '@mui/material';
 import React, { FC } from 'react';
@@ -14,6 +16,8 @@ import { FieldErrors } from 'react-hook-form/dist/types/errors';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IFishLimit } from '../../types';
 import { Controller } from 'react-hook-form';
+import { NumericFormat } from 'react-number-format';
+import { useAppSelector } from '../../store';
 
 interface IFormListProps {
   register: UseFormRegister<IForm>;
@@ -25,11 +29,11 @@ interface IFormListProps {
 }
 
 const checkLimit = (
-	value: number,
+	value: number | undefined | null,
 	max: number | undefined,
 	min: number | undefined
 ) => {
-	if (max === undefined || min === undefined) {
+	if (max === undefined || min === undefined || max === null || min === null) {
 		return;
 	}
 
@@ -48,6 +52,10 @@ export const FormList: FC<IFormListProps> = ({
 }) => {
 	const currentErrors = errors?.fishes?.[index];
 
+	const optionsGroupsFish = useAppSelector(
+		(store) => store.form.optionsGroupsFish
+	);
+
 	return (
 		<Box
 			position="relative"
@@ -60,24 +68,29 @@ export const FormList: FC<IFormListProps> = ({
 			bgcolor="white"
 			boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
 		>
-			{
-				index > 0 && (
-					<IconButton
-						sx={{ width: 'fit-content', position: 'absolute', top: '5px', right: '5px' }}
-						onClick={() => {
-							if (!index) return;
-							onDelete(index);
-						}}
-					>
-						<DeleteIcon />
-					</IconButton>
-				)
-			}
-			<Typography sx={{ textAlign: 'center' }} variant='h5'>Рыба №{index + 1}</Typography>
+			{index > 0 && (
+				<IconButton
+					sx={{
+						width: 'fit-content',
+						position: 'absolute',
+						top: '5px',
+						right: '5px'
+					}}
+					onClick={() => {
+						if (!index) return;
+						onDelete(index);
+					}}
+				>
+					<DeleteIcon />
+				</IconButton>
+			)}
+
+			<Typography sx={{ textAlign: 'center' }} variant="h5">
+        Рыба №{index + 1}
+			</Typography>
 			<FormControl>
 				<InputLabel>Идентификатор</InputLabel>
 				<Input
-					type="number"
 					{...register(`fishes.${index}.id`)}
 					error={Boolean(currentErrors?.id?.type)}
 				/>
@@ -90,8 +103,12 @@ export const FormList: FC<IFormListProps> = ({
 					name={`fishes.${index}.weight`}
 					control={control}
 					render={({ field }) => (
-						<Input
-							type="number"
+						<NumericFormat
+							thousandSeparator={false}
+							decimalSeparator="."
+							decimalScale={2}
+							allowNegative={false}
+							customInput={Input}
 							value={field.value}
 							onChange={field.onChange}
 							inputRef={field.ref}
@@ -124,8 +141,12 @@ export const FormList: FC<IFormListProps> = ({
 					name={`fishes.${index}.length`}
 					control={control}
 					render={({ field }) => (
-						<Input
-							type="number"
+						<NumericFormat
+							thousandSeparator={false}
+							decimalSeparator="."
+							decimalScale={2}
+							allowNegative={false}
+							customInput={Input}
 							value={field.value}
 							onChange={field.onChange}
 							inputRef={field.ref}
@@ -158,8 +179,12 @@ export const FormList: FC<IFormListProps> = ({
 					name={`fishes.${index}.height`}
 					control={control}
 					render={({ field }) => (
-						<Input
-							type="number"
+						<NumericFormat
+							thousandSeparator={false}
+							decimalSeparator="."
+							decimalScale={2}
+							allowNegative={false}
+							customInput={Input}
 							value={field.value}
 							onChange={field.onChange}
 							inputRef={field.ref}
@@ -192,8 +217,12 @@ export const FormList: FC<IFormListProps> = ({
 					name={`fishes.${index}.thickness`}
 					control={control}
 					render={({ field }) => (
-						<Input
-							type="number"
+						<NumericFormat
+							thousandSeparator={false}
+							decimalSeparator="."
+							decimalScale={2}
+							allowNegative={false}
+							customInput={Input}
 							value={field.value}
 							onChange={field.onChange}
 							inputRef={field.ref}
@@ -226,8 +255,12 @@ export const FormList: FC<IFormListProps> = ({
 					name={`fishes.${index}.eggs_weight`}
 					control={control}
 					render={({ field }) => (
-						<Input
-							type="number"
+						<NumericFormat
+							thousandSeparator={false}
+							decimalSeparator="."
+							decimalScale={2}
+							allowNegative={false}
+							customInput={Input}
 							value={field.value}
 							onChange={field.onChange}
 							inputRef={field.ref}
@@ -260,8 +293,12 @@ export const FormList: FC<IFormListProps> = ({
 					name={`fishes.${index}.egg_weight`}
 					control={control}
 					render={({ field }) => (
-						<Input
-							type="number"
+						<NumericFormat
+							thousandSeparator={false}
+							decimalSeparator="."
+							decimalScale={2}
+							allowNegative={false}
+							customInput={Input}
 							value={field.value}
 							onChange={field.onChange}
 							inputRef={field.ref}
@@ -285,6 +322,75 @@ export const FormList: FC<IFormListProps> = ({
 				<FormHelperText sx={{ color: 'red' }}>
 					{currentErrors?.egg_weight?.message}
 				</FormHelperText>
+			</FormControl>
+
+			<FormControl variant="standard">
+				<InputLabel>Номер группы</InputLabel>
+
+				<Controller
+					name={`fishes.${index}.group_id`}
+					control={control}
+					render={({ field }) => (
+						<Select
+							value={field.value}
+							onChange={field.onChange}
+							inputRef={field.ref}
+							defaultValue={'not'}
+						>
+							{optionsGroupsFish.map((item, index) => (
+								<MenuItem key={index} value={item.value}>
+									{item.text}
+								</MenuItem>
+							))}
+						</Select>
+					)}
+				/>
+			</FormControl>
+
+			<FormControl variant="standard">
+				<InputLabel>Группа папы</InputLabel>
+
+				<Controller
+					name={`fishes.${index}.father_group`}
+					control={control}
+					render={({ field }) => (
+						<Select
+							value={field.value}
+							onChange={field.onChange}
+							inputRef={field.ref}
+							defaultValue={'not'}
+						>
+							{optionsGroupsFish.map((item, index) => (
+								<MenuItem key={index} value={item.value}>
+									{item.text}
+								</MenuItem>
+							))}
+						</Select>
+					)}
+				/>
+			</FormControl>
+
+			<FormControl variant="standard">
+				<InputLabel>Группа мамы</InputLabel>
+
+				<Controller
+					name={`fishes.${index}.mother_group`}
+					control={control}
+					render={({ field }) => (
+						<Select
+							value={field.value}
+							onChange={field.onChange}
+							inputRef={field.ref}
+							defaultValue={'not'}
+						>
+							{optionsGroupsFish.map((item, index) => (
+								<MenuItem key={index} value={item.value}>
+									{item.text}
+								</MenuItem>
+							))}
+						</Select>
+					)}
+				/>
 			</FormControl>
 
 			{currentErrors && <Typography color="red">Ошибка</Typography>}

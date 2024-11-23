@@ -1,5 +1,5 @@
 import { SubmitHandler } from 'react-hook-form';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button } from '@mui/material';
 import { FormList } from './FormList.tsx';
 import { IForm } from './types.ts';
@@ -8,12 +8,16 @@ import { IFishLimit } from '../../types';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useAppDispatch } from '../../store';
+import {
+	setGroupsFish,
+	setOptionsGroupsFish
+} from '../../features/form/reducer.ts';
 import { setFishes } from '../../features/table/reducer.ts';
 
 export const Form = () => {
 	const [fishLimit, setFishLimit] = useState<IFishLimit | null>(null);
 
-	const scrollContainerRef = useRef<HTMLDivElement>(null);
+	const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
 	const dispatch = useAppDispatch();
 
@@ -28,6 +32,17 @@ export const Form = () => {
 		form
 	} = useMyForm();
 
+	const getFishLimit = () => {
+		return axios
+			.get('http://87.251.79.100:8080/api/v1/fishes/parameters-limits')
+			.then((res) => {
+				setFishLimit(res.data);
+			})
+			.catch(() => {
+				toast.error('При получение лимитов произошла ошибка');
+			});
+	};
+
 	const onSubmit: SubmitHandler<IForm> = async ({ fishes }) => {
 		const requestBody = fishes.map((fish) => ({
 			id: fish.id || null,
@@ -36,7 +51,10 @@ export const Form = () => {
 			height: Number(fish.height),
 			thickness: Number(fish.thickness),
 			eggs_weight: Number(fish.eggs_weight),
-			egg_weight: Number(fish.egg_weight)
+			egg_weight: Number(fish.egg_weight),
+			group_id: fish.group_id === 'not' ? null : fish.group_id,
+			father_group: fish.father_group === 'not' ? null : fish.father_group,
+			mother_group: fish.mother_group === 'not' ? null : fish.mother_group
 		}));
 
 		try {
@@ -44,6 +62,8 @@ export const Form = () => {
 				'http://87.251.79.100:8080/api/v1/fishes',
 				requestBody
 			);
+
+			await getFishLimit();
 
 			dispatch(setFishes(data));
 			form.reset();
@@ -67,7 +87,10 @@ export const Form = () => {
 			height: null,
 			thickness: null,
 			eggs_weight: null,
-			egg_weight: null
+			egg_weight: null,
+			group_id: 'not',
+			father_group: 'not',
+			mother_group: 'not'
 		});
 
 		setTimeout(() => {
@@ -86,13 +109,26 @@ export const Form = () => {
 	};
 
 	useEffect(() => {
+		getFishLimit();
+
 		axios
-			.get('http://87.251.79.100:8080/api/v1/fishes/parameters-limits')
-			.then((res) => {
-				setFishLimit(res.data);
+			.get('http://87.251.79.100:8080/api/v1/groups')
+			.then(({ data }) => {
+				dispatch(
+					setOptionsGroupsFish(
+						data
+							.filter((item) => typeof item.id === 'string')
+							.map((item) => ({
+								value: item.id,
+								text: item.id
+							}))
+					)
+				);
+
+				dispatch(setGroupsFish(data));
 			})
 			.catch(() => {
-				toast.error('При получение лимитов произошла ошибка');
+				toast.error('При получение списка групп произошла ошибка');
 			});
 	}, []);
 
@@ -104,7 +140,7 @@ export const Form = () => {
 					flexDirection="row"
 					gap="25px"
 					padding="16px 10px"
-					width='100%'
+					width="100%"
 					alignItems="center"
 					boxSizing="border-box"
 					ref={scrollContainerRef}
@@ -128,8 +164,12 @@ export const Form = () => {
 					))}
 				</Box>
 				<Box display="flex" gap="10px">
-					<Button variant='contained' onClick={handleClickAddMore}>Добавить</Button>
-					<Button variant='contained' type="submit">Отправить</Button>
+					<Button variant="contained" onClick={handleClickAddMore}>
+            Добавить
+					</Button>
+					<Button variant="contained" type="submit">
+            Отправить
+					</Button>
 				</Box>
 			</Box>
 		</form>

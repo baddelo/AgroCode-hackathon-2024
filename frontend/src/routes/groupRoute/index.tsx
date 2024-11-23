@@ -1,7 +1,7 @@
+import { FormGroup } from '../../components/FormGroup';
+
 function GroupRoute() {
-	return (
-		<></>
-	);
+	return <FormGroup />;
 }
 
 export default GroupRoute;
