@@ -38,7 +38,7 @@ class FishDAO:
             sort_direction = ASCENDING if order.direction == 'ASC' else DESCENDING
             sort_criteria.append((order.field, sort_direction))
 
-        group = await Group.find_one(Group.id == 0)
+        group = await Group.find_one(Group.id == "0")
 
         if not group:
             return []
