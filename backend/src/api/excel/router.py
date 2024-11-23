@@ -2,9 +2,9 @@ import io
 from typing import List, Annotated
 
 from fastapi import APIRouter, status, Body, Query, File
-from starlette.responses import StreamingResponse
+from starlette.responses import StreamingResponse, Response
 
-from src.domain.excel.dal import read_group_from_excel
+from src.domain.excel.dal import read_group_from_excel, write_group_to_excel
 
 excel_rest_v1 = APIRouter(
     tags=["Excel"],
@@ -27,11 +27,12 @@ async def upload_excel(
 @excel_rest_v1.get(
     '/download',
 )
-async def download_excel() -> StreamingResponse:
-    with open('test.xlsx', 'rb') as f:
-        headers = {
-            'Content-Disposition': 'attachment; filename="name_of_excel_file.xls"',
-        }
-        return StreamingResponse(
-            io.BytesIO(f.read()), headers=headers
-        )
+async def download_excel(group_id: str) -> Response:
+    headers = {
+        'Content-Disposition': f'attachment; filename="Report_{group_id}.xlsx"'
+    }
+    file = await write_group_to_excel(group_id)
+    return Response(
+        file.getvalue(), headers=headers, media_type="application/octet-stream",
+    )
+

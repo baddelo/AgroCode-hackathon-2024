@@ -1,11 +1,12 @@
 import io
 import uuid
 
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 from pydantic import ValidationError
 
 from src.domain.excel.dto import ExcelImportResultDTO
 from src.domain.fish.model import Fish
+from src.domain.fish.service import get_fishes_list
 from src.domain.group.model import Group
 
 
@@ -39,3 +40,60 @@ async def read_group_from_excel(file: io.BytesIO):
         correct_fish_count=correct_fish_count,
         error_fish_count=error_fish_count,
     )
+
+
+async def write_group_to_excel(group_id: str):
+    group = await Group.get(group_id)
+    if group is None:
+        return None
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = group.breed
+    sheet.append(
+        [
+            'Индентификатор',
+            'Вес',
+            'Длина',
+            'Высота',
+            'Толщина',
+            'Вес икры',
+            'Вес икринки',
+
+            'К упитанности',
+            'И толщины',
+            'И высоты',
+            'Доля икры',
+            'Рабочая плодовитость',
+            'Относительная плодовитость',
+            'Репродуктивный индекс',
+
+            'Шанс хорошего потомства',
+            'Группа'
+        ]
+    )
+    fishes = await get_fishes_list(group_id)
+    for fish in fishes:
+        sheet.append([
+            fish.id,
+            fish.weight,
+            fish.length,
+            fish.height,
+            fish.thickness,
+            fish.eggs_weight,
+            fish.egg_weight,
+
+            fish.k_upit,
+            fish.i_tolsh,
+            fish.i_visots,
+            fish.dolya_icry,
+            fish.work_plodovitost,
+            fish.otnosit_plodovitost,
+            fish.index_reproduction,
+
+            fish.predict_proba,
+            group.id,
+        ])
+    file = io.BytesIO()
+    workbook.save(file)
+    return file
+
