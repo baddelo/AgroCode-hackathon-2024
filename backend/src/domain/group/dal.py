@@ -20,7 +20,7 @@ class GroupDAO:
         self,
         data: GroupCreateDTO
     ) -> None:
-        group = await Group.model_validate(data.model_dump())
+        group = Group.model_validate(data.model_dump())
         await group.save()
 
     async def get_list(
