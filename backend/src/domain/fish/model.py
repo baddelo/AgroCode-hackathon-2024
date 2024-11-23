@@ -1,6 +1,3 @@
-from typing import List
-
-from beanie import Document, Link
 from src.domain.abc.dto import ABCDTO
 
 
@@ -15,11 +12,3 @@ class Fish(ABCDTO):
 
     father_id: str | None = None
     mother_id: str | None = None
-
-
-class Group(Document):
-    id: int
-    fishes: List[Fish]
-    father_group: Link['Group'] | None
-    mother_group: Link['Group'] | None
-
