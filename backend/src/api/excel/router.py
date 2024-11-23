@@ -4,6 +4,8 @@ from typing import List, Annotated
 from fastapi import APIRouter, status, Body, Query, File
 from starlette.responses import StreamingResponse
 
+from src.domain.excel.dal import read_group_from_excel
+
 excel_rest_v1 = APIRouter(
     tags=["Excel"],
     prefix='/excel'
@@ -17,6 +19,8 @@ excel_rest_v1 = APIRouter(
 async def upload_excel(
     file: Annotated[bytes, File()]
 ) -> None:
+    file_bytes = io.BytesIO(file)
+    await read_group_from_excel(file_bytes)
     return
 
 
