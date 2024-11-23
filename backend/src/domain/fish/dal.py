@@ -4,7 +4,7 @@ from pymongo import ASCENDING, DESCENDING
 
 from src.domain.fish.dto import FishCreateDTO, OrdersDTO, FishGetDTO
 
-from src.domain.fish.model import Group
+from src.domain.group.model import Group
 from src.domain.fish.model import Fish
 from src.domain.fish.dto import FishParametersLimitsDTO, ParameterLimitDTO
 
