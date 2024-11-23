@@ -33,11 +33,11 @@ class GraphBuilder:
         if group.father_group:
             father_id = self.node_map.get(group.father_group.ref.id)
             if father_id is not None:
-                self.add_edge(source=father_id, target=group_node_id)
+                self.add_edge(source=group_node_id, target=father_id)
         if group.mother_group:
             mother_id = self.node_map.get(group.mother_group.ref.id)
             if mother_id is not None:
-                self.add_edge(source=mother_id, target=group_node_id)
+                self.add_edge(source=group_node_id, target=mother_id)
 
         # Process fishes in the group
         for fish in group.fishes:
@@ -52,7 +52,7 @@ class GraphBuilder:
             )
             fish_node_id = self.add_node(DataDTO(fish=fish_dto))
             self.node_map[fish.id] = fish_node_id
-            self.add_edge(source=fish_node_id, target=group_node_id)
+            self.add_edge(source=group_node_id, target=fish_node_id)
 
             # Add parentage edges for the fish
             if fish.father_id is not None and fish.father_id in self.node_map.keys():
