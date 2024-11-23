@@ -15,12 +15,28 @@ class FishCreateDTO(ABCDTO):
     eggs_weight: float | None = Field(None, ge=0)
     egg_weight: float | None = Field(None, ge=0)
 
-    @field_validator('id')
+    @field_validator('id', mode='before')
     @classmethod
     def id_validator(cls, v: str | None) -> str:
         if v is None:
             return str(uuid.uuid4())
         return v
+
+    @field_validator(
+        'height',
+        'weight',
+        'length',
+        'thickness',
+        'eggs_weight',
+        'egg_weight',
+        mode='before'
+    )
+    @classmethod
+    def parameter_validator(cls, v: float | None) -> float | None:
+        if v is None or v == 0:
+            return None
+        else:
+            return v
 
 
 class FishCreateResponseDTO(ABCDTO):
