@@ -1,5 +1,12 @@
+import { Box } from '@mui/material';
+import { Table } from '../../components';
+
 function GraphPage() {
-	return <h1 style={{ textAlign: 'center' }}>Graph Page</h1>;
+	return (
+		<Box display="flex" flexDirection="column" alignItems="center" p='32px'>
+			<Table />
+		</Box>
+	);
 }
 
 export default GraphPage;

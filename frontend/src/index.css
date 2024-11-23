@@ -20,3 +20,22 @@ body {
   min-height: 100vh;
   scroll-behavior: smooth;
 }
+
+::-webkit-scrollbar {
+  width: .5em;
+  height: .4em;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #777777;
+  border-radius: 1em;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+  cursor: pointer;
+}

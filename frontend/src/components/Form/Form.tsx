@@ -1,5 +1,5 @@
 import { SubmitHandler } from 'react-hook-form';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Box, Button } from '@mui/material';
 import { FormList } from './FormList.tsx';
 import { IForm } from './types.ts';
@@ -11,7 +11,9 @@ import { useAppDispatch } from '../../store';
 import { setFishes } from '../../features/table/reducer.ts';
 
 export const Form = () => {
-	const [fishLimit, setFishLimit] = useState<IFishLimit>(null);
+	const [fishLimit, setFishLimit] = useState<IFishLimit | null>(null);
+
+	const scrollContainerRef = useRef<HTMLDivElement>(null);
 
 	const dispatch = useAppDispatch();
 
@@ -67,6 +69,16 @@ export const Form = () => {
 			eggs_weight: null,
 			egg_weight: null
 		});
+
+		setTimeout(() => {
+			const container = scrollContainerRef.current;
+			if (container) {
+				container.scrollTo({
+					left: container.scrollWidth,
+					behavior: 'smooth'
+				});
+			}
+		}, 0);
 	};
 
 	const handleClickRemove = (index: number) => {
@@ -86,13 +98,21 @@ export const Form = () => {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit, onError)}>
-			<Box display="flex" flexDirection="column" gap="15px">
+			<Box display="flex" flexDirection="column" alignItems="center" gap="15px">
 				<Box
 					display="flex"
-					gap="15px"
-					padding="16px 0"
+					flexDirection="row"
+					gap="25px"
+					padding="16px 10px"
+					width='100%'
+					alignItems="center"
+					boxSizing="border-box"
+					ref={scrollContainerRef}
 					sx={{
-						overflowX: 'auto'
+						overflowX: 'auto',
+						whiteSpace: 'nowrap',
+						scrollBehavior: 'smooth',
+						justifyContent: fields.length > 2 ? 'start' : 'center'
 					}}
 				>
 					{fields.map((field, index) => (
@@ -107,10 +127,9 @@ export const Form = () => {
 						/>
 					))}
 				</Box>
-
 				<Box display="flex" gap="10px">
-					<Button type="submit">Отправить</Button>
-					<Button onClick={handleClickAddMore}>Добавить еще</Button>
+					<Button variant='contained' onClick={handleClickAddMore}>Добавить</Button>
+					<Button variant='contained' type="submit">Отправить</Button>
 				</Box>
 			</Box>
 		</form>

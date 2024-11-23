@@ -49,20 +49,31 @@ export const FormList: FC<IFormListProps> = ({
 	const currentErrors = errors?.fishes?.[index];
 
 	return (
-		<Box minWidth="300px" display="flex" flexDirection="column" gap="15px">
-			<IconButton
-				sx={{ width: 'fit-content' }}
-				onClick={() => {
-					if (!index) {
-						return;
-					}
-
-					onDelete(index);
-				}}
-			>
-				<DeleteIcon />
-			</IconButton>
-
+		<Box
+			position="relative"
+			minWidth="17rem"
+			display="flex"
+			flexDirection="column"
+			gap="15px"
+			padding="2rem"
+			borderRadius="10px"
+			bgcolor="white"
+			boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+		>
+			{
+				index > 0 && (
+					<IconButton
+						sx={{ width: 'fit-content', position: 'absolute', top: '5px', right: '5px' }}
+						onClick={() => {
+							if (!index) return;
+							onDelete(index);
+						}}
+					>
+						<DeleteIcon />
+					</IconButton>
+				)
+			}
+			<Typography sx={{ textAlign: 'center' }} variant='h5'>Рыба №{index + 1}</Typography>
 			<FormControl>
 				<InputLabel>Идентификатор</InputLabel>
 				<Input

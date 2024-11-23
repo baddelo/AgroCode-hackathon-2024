@@ -15,7 +15,7 @@ function MainLayout() {
 						alignItems: 'center',
 						gap: 1,
 						userSelect: 'none',
-						padding: '1rem'
+						padding: '1rem 2rem'
 					}}
 				>
 					<Box
