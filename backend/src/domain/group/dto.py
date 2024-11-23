@@ -7,7 +7,7 @@ from src.domain.abc.dto import ABCDTO
 
 
 class GroupCreateDTO(ABCDTO):
-    id: str
+    id: str | None = Field(None)
     breed: Literal['Лосось', 'Форель']
     sex: Literal['М', 'Ж']
     father_group: str | None = Field(None)

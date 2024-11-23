@@ -21,7 +21,7 @@ class FishDAO:
     async def create(
             self,
             data: List[FishCreateDTO],
-    ) -> List[Fish]:
+    ) -> List[FishGetDTO]:
         groups = await Group.find_all().to_list()
         groups_map = {
             group.id: group
@@ -32,58 +32,62 @@ class FishDAO:
             group = groups_map.get(item.group_id)
             fish = Fish.model_validate(item)
             group.fishes.append(fish)
-            fishes.append(fish)
+            fishes.append(
+                FishGetDTO(
+                    id=fish.id,
+                    weight=fish.weight,
+                    length=fish.length,
+                    height=fish.height,
+                    thickness=fish.thickness,
+                    eggs_weight=fish.eggs_weight,
+                    egg_weight=fish.egg_weight,
+
+                    breed=group.breed,
+                    sex=group.sex,
+                )
+            )
             await group.save()
         return fishes
 
     async def get_list(
             self,
-            offset: int,
-            limit: int,
             group_id: str | None,
-            orders: List[OrdersDTO]
     ) -> List[FishGetDTO]:
-        sort_criteria = []
-        for order in orders:
-            sort_direction = ASCENDING if order.direction == 'ASC' else DESCENDING
-            sort_criteria.append((order.field, sort_direction))
-
         if group_id is None:
-            fishes = []
-            [
-                fishes.extend(group.fishes)
-                for group in await Group.find_all().to_list()
+            return [
+                FishGetDTO(
+                    id=fish.id,
+                    weight=fish.weight,
+                    length=fish.length,
+                    height=fish.height,
+                    thickness=fish.thickness,
+                    eggs_weight=fish.eggs_weight,
+                    egg_weight=fish.egg_weight,
+
+                    breed=group.breed,
+                    sex=group.sex,
+                )
+                for group in await Group.find_all().to_list() for fish in group.fishes
             ]
         else:
             group = await Group.find_one(Group.id == group_id)
             if group is None:
                 return []
-            fishes = group.fishes
+            return [
+                FishGetDTO(
+                    id=fish.id,
+                    weight=fish.weight,
+                    length=fish.length,
+                    height=fish.height,
+                    thickness=fish.thickness,
+                    eggs_weight=fish.eggs_weight,
+                    egg_weight=fish.egg_weight,
 
-        if len(fishes) < 1:
-            return []
-
-        sorted_fishes = sorted(
-            fishes,
-            key=lambda fish: tuple(
-                getattr(fish, order.field) or 0 for order in orders
-            ),
-            reverse=any(order.direction == 'DESC' for order in orders)
-        )
-
-        paginated_fishes = sorted_fishes[offset:limit]
-
-        return [
-            FishGetDTO(
-                id=fish.id,
-                weight=fish.weight,
-                height=fish.height,
-                length=fish.length,
-                thickness=fish.thickness,
-                eggs_weight=fish.eggs_weight,
-                egg_weight=fish.egg_weight
-            ) for fish in paginated_fishes
-        ]
+                    breed=group.breed,
+                    sex=group.sex,
+                )
+                for fish in group.fishes
+            ]
 
 
     async def get_parameters_limits(self) -> FishParametersLimitsDTO | None:

@@ -21,11 +21,6 @@ async def create_group(group_data: GroupCreateDTO):
     await GroupDAO().create(group_data)
 
 
-async def get_groups(page: int, size: int, orders: List[GroupOrdersDTO]) -> List[GroupGetDTO]:
-    offset = (page - 1) * size
-    limit = offset + size
-    groups = await GroupDAO().get_list(offset, limit, orders)
-    return [
-        GroupGetDTO.model_validate(group)
-        for group in groups
-    ]
+async def get_groups() -> List[GroupGetDTO]:
+    groups = await GroupDAO().get_list()
+    return groups
