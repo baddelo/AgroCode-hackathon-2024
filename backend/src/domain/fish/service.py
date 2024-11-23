@@ -1,3 +1,4 @@
+import os
 import joblib
 import pandas as pd
 from typing import List
@@ -48,8 +49,8 @@ async def get_fishes_list(group_id: str | None) -> List[FishGetDTO]:
 
 
 def predict_fishes(fishes: List[FishGetDTO]) -> List[float]:
-    forell_model = joblib.load('../models/forell.pkl')
-    lossos_model = joblib.load('../models/lossos.pkl')
+    forell_model = joblib.load(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../models/forell.pkl")))
+    lossos_model = joblib.load(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../models/lossos.pkl")))
 
     for fish in fishes:
         if fish.breed == 'Форель':
@@ -74,13 +75,13 @@ def predict_fishes(fishes: List[FishGetDTO]) -> List[float]:
                     {
                         'body_weight': [fish.weight],
                         'smith_length': [fish.length],
-                        'roe_weight': [fish.weight],
                         'body_height': [fish.height],
                         'body_thickness': [fish.thickness],
-                        'thickness_index': [fish.i_tolsh],
-                        'height_index': [fish.i_visots],
+                        'roe_weight': [fish.weight],
                         'roe_egg_weight': [fish.egg_weight],
                         'condition_factor': [fish.k_upit],
+                        'thickness_index': [fish.i_tolsh],
+                        'height_index': [fish.i_visots],
                         'roe_ratio_percent': [fish.dolya_icry],
                         'working_fecundity': [fish.work_plodovitost],
                         'relative_fecundity': [fish.otnosit_plodovitost],
