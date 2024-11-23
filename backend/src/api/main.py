@@ -6,19 +6,21 @@ from starlette.middleware.cors import CORSMiddleware
 from src.config.backend import BACKEND_CONFIG
 from src.database.mongo.model import init_models
 from src.utils.routers_utils import include_routers
-from src.domain.fish.model import Group
+from src.domain.group.model import Group
 
 
 @asynccontextmanager
 async def lifespan(app_: FastAPI):
     await init_models()
-    if await Group.find_one(Group.id == 0) is None:
-        await Group(id=0, fishes=[], mother_group=None, father_group=None).create()
+    # if await Group.find_one(Group.id == 0) is None:
+    #     await Group(id=0, fishes=[], mother_group=None, father_group=None).create()
 
     from src.api.fishes.router import fishes_rest_v1
+    from src.api.groups.router import groups_rest_v1
 
     v1_routers = [
-        fishes_rest_v1
+        fishes_rest_v1,
+        groups_rest_v1,
     ]
     v1_router = include_routers(APIRouter(prefix='/v1'), v1_routers)
     main_router = include_routers(APIRouter(prefix='/api'), (v1_router,))

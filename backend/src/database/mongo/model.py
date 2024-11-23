@@ -3,7 +3,7 @@ from beanie import init_beanie
 from src.config.mongo import MONGO_CONFIG
 from src.database.mongo.connection import client
 
-from src.domain.fish.model import Group
+from src.domain.group.model import Group
 
 
 async def init_models():

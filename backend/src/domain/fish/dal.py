@@ -4,17 +4,17 @@ from pymongo import ASCENDING, DESCENDING
 
 from src.domain.fish.dto import FishCreateDTO, OrdersDTO, FishGetDTO
 
-from src.domain.fish.model import Group
+from src.domain.group.model import Group
 from src.domain.fish.model import Fish
 from src.domain.fish.dto import FishParametersLimitsDTO, ParameterLimitDTO
 
 
 class FishDAO:
     async def get_ids(
-        self
+        self,
     ) -> set[str]:
         group = await Group.find_one(
-            Group.id == 0
+            Group.id == "0"
         )
         return set(fish.id for fish in group.fishes)
 
@@ -22,7 +22,7 @@ class FishDAO:
         self,
         data: List[FishCreateDTO]
     ) -> List[Fish]:
-        group = await Group.find_one(Group.id == 0)
+        group = await Group.find_one(Group.id == "0")
         group.fishes.extend([Fish.model_validate(fish) for fish in data])
         await group.save()
         return group.fishes
@@ -51,7 +51,7 @@ class FishDAO:
             reverse=any(order.direction == 'DESC' for order in orders)
         )
 
-        paginated_fishes = sorted_fishes[offset: limit]
+        paginated_fishes = sorted_fishes[offset:limit]
 
         return [
             FishGetDTO(
@@ -66,9 +66,10 @@ class FishDAO:
         ]
 
 
-    async def get_parameters_limits(self) -> FishParametersLimitsDTO:
-        group = await Group.find_one(Group.id == 0)
-        if len(group.fishes) == 0:
+    async def get_parameters_limits(self) -> FishParametersLimitsDTO | None:
+        groups = await Group.find().to_list()
+        fishes = [fish for group in groups for fish in group.fishes]
+        if len(fishes) == 0:
             return FishParametersLimitsDTO(
                 height=ParameterLimitDTO(
                     min=0,
@@ -99,7 +100,7 @@ class FishDAO:
         def get_average(field: str) -> ParameterLimitDTO:
             field_values = [
                 fish.__getattribute__(field)
-                for fish in group.fishes
+                for fish in fishes
                 if fish.__getattribute__(field) not in [0, None]
             ]
             if len(field_values) == 0:
@@ -129,4 +130,13 @@ class FishDAO:
             thickness=thickness,
             eggs_weight=eggs_weight,
             egg_weight=egg_weight
+        )
+
+    async def get_by_id(self, group_id: str, fish_id: str) -> Fish | None:
+        group = await Group.find_one(Group.id == group_id)
+        if not group:
+            return None
+        return next(
+            (fish for fish in group.fishes if fish.id == fish_id),
+            None
         )
