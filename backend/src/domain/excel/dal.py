@@ -128,8 +128,8 @@ async def write_generations_to_excel():
     for group in groups:
         sheet.append([
             group.id,
-            group.mother_group.ref.id,
-            group.father_group.ref.id,
+            group.mother_group.ref.id if group.mother_group is not None else None,
+            group.father_group.ref.id if group.father_group is not None else None,
         ])
     file = io.BytesIO()
     workbook.save(file)
