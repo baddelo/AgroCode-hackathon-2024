@@ -15,26 +15,24 @@ export const Form = () => {
     useMyForm();
 
 	const onSubmit: SubmitHandler<IForm> = ({ fishes }) => {
-		console.log({ fishes });
+		const requestBody = fishes.map((fish) => ({
+			id: String(fish.id),
+			weight: Number(fish.weight),
+			length: Number(fish.length),
+			height: Number(fish.height),
+			thickness: Number(fish.thickness),
+			eggs_weight: Number(fish.eggs_weight),
+			egg_weight: Number(fish.egg_weight)
+		}));
 
-		// const requestBody = fishes.map((fish) => ({
-		// 	id: String(fish.id),
-		// 	weight: Number(fish.weight),
-		// 	length: Number(fish.length),
-		// 	height: Number(fish.height),
-		// 	thickness: Number(fish.thickness),
-		// 	eggs_weight: Number(fish.eggs_weight),
-		// 	egg_weight: Number(fish.egg_weight)
-		// }));
-		//
-		// axios
-		// 	.post('http://87.251.79.100:8080/api/v1/fishes', requestBody, {})
-		// 	.then((res) => {
-		// 		console.log('Успех', res.data);
-		// 	})
-		// 	.catch(() => {
-		// 		toast.error('При отправки произошла ошибка');
-		// 	});
+		axios
+			.post('http://87.251.79.100:8080/api/v1/fishes', requestBody, {})
+			.then((res) => {
+				console.log('Успех', res.data);
+			})
+			.catch(() => {
+				toast.error('При отправки произошла ошибка');
+			});
 	};
 
 	const handleClickAddMore = () => {
