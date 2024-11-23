@@ -18,15 +18,15 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishGetDTO]:
         if group is None:
             raise GROUP_NOT_FOUND_EXCEPTION
 
-        fish_ = await FishDAO().get_by_id(fish.id, fish.group_id)
+        fish_ = await FishDAO().get_by_fish_id(fish.id)
         if fish_ is not None:
             raise FISH_ID_OVERLAP_EXCEPTION
 
-        mother = await FishDAO().get_by_id(fish.mother_id, fish.group_id)
+        mother = await FishDAO().get_by_fish_id(fish.mother_id)
         if mother is None:
             fishes_data[i].mother_id = None
 
-        father = await FishDAO().get_by_id(fish.father_id, fish.group_id)
+        father = await FishDAO().get_by_fish_id(fish.father_id)
         if father is None:
             fishes_data[i].father_id = None
 

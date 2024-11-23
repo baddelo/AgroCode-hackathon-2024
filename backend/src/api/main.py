@@ -17,10 +17,11 @@ async def lifespan(app_: FastAPI):
 
     from src.api.fishes.router import fishes_rest_v1
     from src.api.groups.router import groups_rest_v1
-
+    from src.api.generations.router import generations_rest_v1
     v1_routers = [
         fishes_rest_v1,
         groups_rest_v1,
+        generations_rest_v1
     ]
     v1_router = include_routers(APIRouter(prefix='/v1'), v1_routers)
     main_router = include_routers(APIRouter(prefix='/api'), (v1_router,))
