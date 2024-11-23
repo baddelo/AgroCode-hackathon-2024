@@ -30,6 +30,7 @@ export const useMyForm = () => {
 
 	return {
 		register,
+		control,
 		handleSubmit,
 		errors,
 		fields,
