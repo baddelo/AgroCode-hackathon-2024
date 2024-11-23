@@ -22,7 +22,7 @@ class FishDAO:
         self,
         data: List[FishCreateDTO]
     ) -> List[Fish]:
-        group = await Group.find_one(Group.id == 0)
+        group = await Group.find_one(Group.id == "0")
         group.fishes.extend([Fish.model_validate(fish) for fish in data])
         await group.save()
         return group.fishes
