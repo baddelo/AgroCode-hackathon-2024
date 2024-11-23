@@ -95,7 +95,7 @@ class FishDAO:
                     max=100
                 )
             )
-        heights = [fish.height for fish in group.fishes]
+        heights = [fish.height for fish in group.fishes if fish.height is not None]
         if len(heights) == 0:
             height = ParameterLimitDTO(
                 min=None,
@@ -107,7 +107,7 @@ class FishDAO:
                 min=average_height*0.5,
                 max=average_height*2
             )
-        weights = [fish.weight for fish in group.fishes]
+        weights = [fish.weight for fish in group.fishes if fish.weight is not None]
         if len(weights) == 0:
             weight = ParameterLimitDTO(
                 min=None,
@@ -119,7 +119,7 @@ class FishDAO:
                 min=average_weight*0.5,
                 max=average_weight*2
             )
-        lengths = [fish.length for fish in group.fishes]
+        lengths = [fish.length for fish in group.fishes if fish.length is not None]
         if len(lengths) == 0:
             length = ParameterLimitDTO(
                 min=None,
@@ -131,7 +131,7 @@ class FishDAO:
                 min=average_length*0.5,
                 max=average_length*2
             )
-        thicknesses = [fish.thickness for fish in group.fishes]
+        thicknesses = [fish.thickness for fish in group.fishes if fish.thickness is not None]
         if len(thicknesses) == 0:
             thickness = ParameterLimitDTO(
                 min=None,
@@ -143,7 +143,7 @@ class FishDAO:
                 min=average_thickness*0.5,
                 max=average_thickness*2
             )
-        eggs_weights = [fish.eggs_weight for fish in group.fishes]
+        eggs_weights = [fish.eggs_weight for fish in group.fishes if fish.eggs_weight is not None]
         if len(eggs_weights) == 0:
             eggs_weight = ParameterLimitDTO(
                 min=None,
@@ -155,7 +155,7 @@ class FishDAO:
                 min=average_eggs_weight*0.5,
                 max=average_eggs_weight*2
             )
-        egg_weights = [fish.egg_weight for fish in group.fishes]
+        egg_weights = [fish.egg_weight for fish in group.fishes if fish.egg_weight is not None]
         if len(egg_weights) == 0:
             egg_weight = ParameterLimitDTO(
                 min=None,
