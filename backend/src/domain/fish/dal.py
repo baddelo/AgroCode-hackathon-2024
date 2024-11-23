@@ -51,12 +51,13 @@ class FishDAO:
             reverse=any(order.direction == 'DESC' for order in orders)
         )
 
-        paginated_fishes = sorted_fishes[(offset - 1) * limit:(offset - 1) * limit + limit]
+        paginated_fishes = sorted_fishes[offset: limit]
 
         return [
             FishGetDTO(
                 id=fish.id,
                 weight=fish.weight,
+                height=fish.height,
                 length=fish.length,
                 thickness=fish.thickness,
                 eggs_weight=fish.eggs_weight,
@@ -65,39 +66,112 @@ class FishDAO:
         ]
 
 
-    async def get_parameters_limits(self) -> FishParametersLimitsDTO | None:
+    async def get_parameters_limits(self) -> FishParametersLimitsDTO:
         group = await Group.find_one(Group.id == 0)
         if len(group.fishes) == 0:
-            return None
-        average_height = sum(fish.height for fish in group.fishes) / len(group.fishes)
-        average_weight = sum(fish.weight for fish in group.fishes) / len(group.fishes)
-        average_length = sum(fish.length for fish in group.fishes) / len(group.fishes)
-        average_thickness = sum(fish.thickness for fish in group.fishes) / len(group.fishes)
-        average_eggs_weight = sum(fish.eggs_weight for fish in group.fishes) / len(group.fishes)
-        average_egg_weight = sum(fish.egg_weight for fish in group.fishes) / len(group.fishes)
-        return FishParametersLimitsDTO(
-            height=ParameterLimitDTO(
+            return FishParametersLimitsDTO(
+                height=ParameterLimitDTO(
+                    min=0,
+                    max=10
+                ),
+                weight=ParameterLimitDTO(
+                    min=1,
+                    max=5
+                ),
+                length=ParameterLimitDTO(
+                    min=7,
+                    max=17
+                ),
+                thickness=ParameterLimitDTO(
+                    min=2,
+                    max=3
+                ),
+                eggs_weight=ParameterLimitDTO(
+                    min=1000,
+                    max=2000
+                ),
+                egg_weight=ParameterLimitDTO(
+                    min=70,
+                    max=100
+                )
+            )
+        heights = [fish.height for fish in group.fishes]
+        if len(heights) == 0:
+            height = ParameterLimitDTO(
+                min=None,
+                max=None
+            )
+        else:
+            average_height = sum(heights) / len(heights)
+            height = ParameterLimitDTO(
                 min=average_height*0.5,
                 max=average_height*2
-            ),
-            weight=ParameterLimitDTO(
+            )
+        weights = [fish.weight for fish in group.fishes]
+        if len(weights) == 0:
+            weight = ParameterLimitDTO(
+                min=None,
+                max=None
+            )
+        else:
+            average_weight = sum(weights) / len(weights)
+            weight = ParameterLimitDTO(
                 min=average_weight*0.5,
                 max=average_weight*2
-            ),
-            length=ParameterLimitDTO(
+            )
+        lengths = [fish.length for fish in group.fishes]
+        if len(lengths) == 0:
+            length = ParameterLimitDTO(
+                min=None,
+                max=None
+            )
+        else:
+            average_length = sum(lengths) / len(lengths)
+            length = ParameterLimitDTO(
                 min=average_length*0.5,
                 max=average_length*2
-            ),
-            thickness=ParameterLimitDTO(
+            )
+        thicknesses = [fish.thickness for fish in group.fishes]
+        if len(thicknesses) == 0:
+            thickness = ParameterLimitDTO(
+                min=None,
+                max=None
+            )
+        else:
+            average_thickness = sum(thicknesses) / len(thicknesses)
+            thickness = ParameterLimitDTO(
                 min=average_thickness*0.5,
                 max=average_thickness*2
-            ),
-            eggs_weight=ParameterLimitDTO(
+            )
+        eggs_weights = [fish.eggs_weight for fish in group.fishes]
+        if len(eggs_weights) == 0:
+            eggs_weight = ParameterLimitDTO(
+                min=None,
+                max=None
+            )
+        else:
+            average_eggs_weight = sum(eggs_weights) / len(eggs_weights)
+            eggs_weight = ParameterLimitDTO(
                 min=average_eggs_weight*0.5,
                 max=average_eggs_weight*2
-            ),
-            egg_weight=ParameterLimitDTO(
+            )
+        egg_weights = [fish.egg_weight for fish in group.fishes]
+        if len(egg_weights) == 0:
+            egg_weight = ParameterLimitDTO(
+                min=None,
+                max=None
+            )
+        else:
+            average_egg_weight = sum(egg_weights) / len(egg_weights)
+            egg_weight = ParameterLimitDTO(
                 min=average_egg_weight*0.5,
                 max=average_egg_weight*2
             )
+        return FishParametersLimitsDTO(
+            height=height,
+            weight=weight,
+            length=length,
+            thickness=thickness,
+            eggs_weight=eggs_weight,
+            egg_weight=egg_weight
         )
