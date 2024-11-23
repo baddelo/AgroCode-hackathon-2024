@@ -1,13 +1,13 @@
 import { FC, useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
-import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps';
+import { Box, Button } from '@mui/material';
+// import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { setFishes } from '../../features/table/reducer.ts';
 
-interface ITableProps {}
+// interface ITableProps {}
 
 const columns: GridColDef[] = [
 	{ field: 'id', headerName: 'ID', type: 'string', width: 110 },
@@ -41,7 +41,7 @@ const columns: GridColDef[] = [
 
 const onOnePage = 15;
 
-export const Table: FC<ITableProps> = () => {
+export const Table: FC = () => {
 	const dispatch = useAppDispatch();
 
 	const fishesStore = useAppSelector((s) => s.table.fishes);
@@ -58,24 +58,33 @@ export const Table: FC<ITableProps> = () => {
 	}, [dispatch]);
 
 	return (
-		<Box width="800px">
-			<DataGrid
-				rows={fishesStore}
-				columns={columns}
-				hideFooter={true}
-				initialState={{
-					pagination: {
-						paginationModel: {
-							page: 0,
-							pageSize: onOnePage
+		<>
+			<Box width="800px">
+				<DataGrid
+					rows={fishesStore}
+					columns={columns}
+					hideFooter={true}
+					initialState={{
+						pagination: {
+							paginationModel: {
+								page: 0,
+								pageSize: onOnePage
+							}
 						}
-					}
-				}}
-				pageSizeOptions={[5, 10]}
-				onPaginationModelChange={(model: GridPaginationModel) => {
-					handleClickPagination(model.page);
-				}}
-			/>
-		</Box>
+					}}
+					pageSizeOptions={[5, 10]}
+					// onPaginationModelChange={(model: GridPaginationModel) => {
+					// 	handleClickPagination(model.page);
+					// }}
+				/>
+			</Box>
+			<Button
+				href='http://87.251.79.100:8080/api/v1/excel/download'
+				variant='contained'
+				sx={{ mt: 2 }}
+			>
+				Скачать таблицу
+			</Button>
+		</>
 	);
 };
