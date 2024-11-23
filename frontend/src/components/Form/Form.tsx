@@ -44,6 +44,7 @@ export const Form = () => {
 			);
 
 			dispatch(setFishes(data));
+			form.reset();
 
 			toast.success('Успешно отправлено');
 		} catch {
