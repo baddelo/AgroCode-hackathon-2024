@@ -90,6 +90,8 @@ class FishGetDTO(ABCDTO):
     breed: str | None = Field(None)
     sex: str | None = Field(None)
 
+    predict_proba: float | None = Field(None)
+
     @model_validator(mode='after')
     def after_validator(self) -> Self:
         digits = 4
