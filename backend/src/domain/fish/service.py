@@ -4,7 +4,6 @@ from src.domain.fish.dto import (
     FishCreateDTO,
     FishParametersLimitsDTO,
     FishGetDTO,
-    OrdersDTO
 )
 from src.domain.fish.exception import FISH_ID_OVERLAP_EXCEPTION
 from src.domain.fish.dal import FishDAO
@@ -22,12 +21,24 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishGetDTO]:
         if fish_ is not None:
             raise FISH_ID_OVERLAP_EXCEPTION
 
-        mother = await FishDAO().get_by_fish_id(fish.mother_id)
-        if mother is None:
+        if group.mother_group is not None:
+            if group.mother_group.ref.id is not None:
+                mother_fish = await FishDAO().get_by_id(group.mother_group.ref.id, fish.mother_id)
+                if mother_fish is None:
+                    fishes_data[i].mother_id = None
+            else:
+                fishes_data[i].mother_id = None
+        else:
             fishes_data[i].mother_id = None
 
-        father = await FishDAO().get_by_fish_id(fish.father_id)
-        if father is None:
+        if group.father_group is not None:
+            if group.father_group.ref.id is not None:
+                father_fish = await FishDAO().get_by_id(group.father_group.ref.id, fish.father_id)
+                if father_fish is None:
+                    fishes_data[i].father_id = None
+            else:
+                fishes_data[i].father_id = None
+        else:
             fishes_data[i].father_id = None
 
     fishes = await FishDAO().create(fishes_data)
