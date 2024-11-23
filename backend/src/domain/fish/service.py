@@ -3,7 +3,8 @@ from typing import List
 from src.domain.fish.dto import (
     FishCreateDTO,
     FishParametersLimitsDTO,
-    FishGetDTO, OrdersDTO
+    FishGetDTO,
+    OrdersDTO
 )
 from src.domain.fish.exception import FISH_ID_OVERLAP_EXCEPTION
 from src.domain.fish.dal import FishDAO
@@ -31,7 +32,15 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishGetDTO]:
 
     fishes = await FishDAO().create(fishes_data)
     return [
-        FishGetDTO.model_validate(fish)
+        FishGetDTO(
+            id=fish.id,
+            weight=fish.weight,
+            length=fish.length,
+            height=fish.height,
+            thickness=fish.thickness,
+            eggs_weight=fish.eggs_weight,
+            egg_weight=fish.egg_weight,
+        )
         for fish in fishes
     ]
 
@@ -46,7 +55,15 @@ async def get_fishes_list(page: int, size: int, group_id: str | None, orders: Li
     limit = offset + size
     fishes = await FishDAO().get_list(offset, limit, group_id, orders)
     return [
-        FishGetDTO.model_validate(fish)
+        FishGetDTO(
+            id=fish.id,
+            weight=fish.weight,
+            length=fish.length,
+            height=fish.height,
+            thickness=fish.thickness,
+            eggs_weight=fish.eggs_weight,
+            egg_weight=fish.egg_weight,
+        )
         for fish in fishes
     ]
 
