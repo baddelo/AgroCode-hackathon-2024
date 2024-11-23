@@ -2,6 +2,7 @@ import io
 import uuid
 
 from openpyxl import load_workbook, Workbook
+from openpyxl.worksheet.worksheet import Worksheet
 from pydantic import ValidationError
 
 from src.domain.excel.dto import ExcelImportResultDTO
@@ -65,7 +66,7 @@ async def write_group_to_excel(group_id: str):
             'Доля икры',
             'Рабочая плодовитость',
             'Относительная плодовитость',
-            'Репродуктивный индекс',
+            'Индекс репродуктивности',
 
             'Шанс хорошего потомства',
             'Группа'
@@ -93,6 +94,7 @@ async def write_group_to_excel(group_id: str):
             fish.predict_proba,
             group.id,
         ])
+    prettify_worksheet(sheet)
     file = io.BytesIO()
     workbook.save(file)
     return file
@@ -117,6 +119,7 @@ async def write_generations_to_excel():
             fish.mother_id,
             fish.father_id,
         ])
+    prettify_worksheet(sheet)
     sheet = workbook.create_sheet(title='Родословная групповая')
     sheet.append(
         [
@@ -132,5 +135,18 @@ async def write_generations_to_excel():
             group.father_group.ref.id if group.father_group is not None else None,
         ])
     file = io.BytesIO()
+    prettify_worksheet(sheet)
     workbook.save(file)
     return file
+
+
+def prettify_worksheet(worksheet: Worksheet):
+    dims = {}
+    for row in worksheet.rows:
+        for cell in row:
+            if cell.value:
+                dims[cell.column_letter] = max((dims.get(cell.column_letter, 0), len(str(cell.value))))
+    for col, value in dims.items():
+        worksheet.column_dimensions[col].width = value + 3
+
+
