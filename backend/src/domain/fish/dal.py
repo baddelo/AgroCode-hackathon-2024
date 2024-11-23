@@ -11,7 +11,7 @@ from src.domain.fish.dto import FishParametersLimitsDTO, ParameterLimitDTO
 
 class FishDAO:
     async def get_ids(
-        self
+        self,
     ) -> set[str]:
         group = await Group.find_one(
             Group.id == 0
