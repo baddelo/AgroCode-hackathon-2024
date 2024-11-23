@@ -45,6 +45,7 @@ async def get_fishes_parameters_limits() -> FishParametersLimitsDTO:
 
 async def get_fishes_list(group_id: str | None) -> List[FishGetDTO]:
     fishes = await FishDAO().get_list(group_id)
+    fishes = predict_fishes(fishes)
     return fishes
 
 
