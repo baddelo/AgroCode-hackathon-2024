@@ -38,12 +38,12 @@ async def get_fishes_parameters_limits_endpoint() -> FishParametersLimitsDTO:
     return await get_fishes_parameters_limits()
 
 
-@fishes_rest_v1.put(
+@fishes_rest_v1.get(
     path='',
     status_code=status.HTTP_200_OK,
     response_model=List[FishGetDTO],
 )
 async def get_fishes_list_endpoint(
-        group_id: str | None = Query(None),
+    group_id: str | None = Query(None),
 ) -> List[FishGetDTO]:
     return await get_fishes_list(group_id)
