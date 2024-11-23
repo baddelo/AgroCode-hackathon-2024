@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, status, Body, Query
 
-from src.domain.fish.dto import FishCreateResponseDTO, FishCreateDTO, FishParametersLimitsDTO, FishGetDTO, OrdersDTO
+from src.domain.fish.dto import FishCreateDTO, FishParametersLimitsDTO, FishGetDTO, OrdersDTO
 from src.domain.fish.exception import FISH_ID_OVERLAP_EXCEPTION
 from src.domain.fish.service import create_fishes, get_fishes_parameters_limits, get_fishes_list
 from src.domain.group.exception import GROUP_NOT_FOUND_EXCEPTION
@@ -17,7 +17,7 @@ fishes_rest_v1 = APIRouter(
 @fishes_rest_v1.post(
     path='',
     status_code=status.HTTP_201_CREATED,
-    response_model=List[FishCreateResponseDTO],
+    response_model=List[FishGetDTO],
     responses=build_exception_responses(
         FISH_ID_OVERLAP_EXCEPTION,
         GROUP_NOT_FOUND_EXCEPTION,
@@ -25,7 +25,7 @@ fishes_rest_v1 = APIRouter(
 )
 async def create_fishes_endpoint(
         body: List[FishCreateDTO] = Body(...)
-) -> List[FishCreateResponseDTO]:
+) -> List[FishGetDTO]:
     return await create_fishes(body)
 
 

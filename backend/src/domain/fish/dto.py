@@ -42,16 +42,6 @@ class FishCreateDTO(ABCDTO):
             return v
 
 
-class FishCreateResponseDTO(ABCDTO):
-    id: str = Field(...)
-    height: float | None = Field(None)
-    weight: float | None = Field(None)
-    length: float | None = Field(None)
-    thickness: float | None = Field(None)
-    eggs_weight: float | None = Field(None)
-    egg_weight: float | None = Field(None)
-
-
 class ParameterLimitDTO(ABCDTO):
     min: float | None = Field(None)
     max: float | None = Field(None)

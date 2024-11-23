@@ -2,7 +2,6 @@ from typing import List
 
 from src.domain.fish.dto import (
     FishCreateDTO,
-    FishCreateResponseDTO,
     FishParametersLimitsDTO,
     FishGetDTO, OrdersDTO
 )
@@ -12,7 +11,7 @@ from src.domain.group.dal import GroupDAO
 from src.domain.group.exception import GROUP_NOT_FOUND_EXCEPTION
 
 
-async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishCreateResponseDTO]:
+async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishGetDTO]:
     for i, fish in enumerate(fishes_data):
         group = await GroupDAO().get_by_id(fish.group_id)
         if group is None:
@@ -32,7 +31,7 @@ async def create_fishes(fishes_data: List[FishCreateDTO]) -> List[FishCreateResp
 
     fishes = await FishDAO().create(fishes_data)
     return [
-        FishCreateResponseDTO.model_validate(fish)
+        FishGetDTO.model_validate(fish)
         for fish in fishes
     ]
 

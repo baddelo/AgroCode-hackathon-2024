@@ -74,15 +74,8 @@ class FishDAO:
         paginated_fishes = sorted_fishes[offset:limit]
 
         return [
-            FishGetDTO(
-                id=fish.id,
-                weight=fish.weight,
-                height=fish.height,
-                length=fish.length,
-                thickness=fish.thickness,
-                eggs_weight=fish.eggs_weight,
-                egg_weight=fish.egg_weight
-            ) for fish in paginated_fishes
+            FishGetDTO.model_validate(fish)
+            for fish in paginated_fishes
         ]
 
 
