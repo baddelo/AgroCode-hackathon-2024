@@ -16,5 +16,5 @@ class GroupDAO:
         self,
         data: GroupCreateDTO
     ) -> None:
-        group = await Group.model_validate(data)
+        group = await Group.model_validate(data.model_dump())
         await group.save()
