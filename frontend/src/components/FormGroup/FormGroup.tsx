@@ -6,7 +6,8 @@ import {
 	Input,
 	InputLabel,
 	MenuItem,
-	Select
+	Select,
+	Typography
 } from '@mui/material';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -86,9 +87,23 @@ export const FormGroup: FC<IFormGroupProps> = () => {
 	}, []);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<form
+			style={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				gap: '1rem',
+				justifyContent: 'center',
+				padding: '2rem'
+			}}
+			onSubmit={handleSubmit(onSubmit)}
+		>
+			<Typography variant="h5">
+				Добавить группу
+			</Typography>
 			<Box
 				maxWidth="17rem"
+				width="100%"
 				display="flex"
 				flexDirection="column"
 				gap="30px"
@@ -197,9 +212,8 @@ export const FormGroup: FC<IFormGroupProps> = () => {
 						)}
 					/>
 				</FormControl>
-
-				<Button type="submit">Отправить</Button>
 			</Box>
+			<Button variant='contained' type="submit">Отправить</Button>
 		</form>
 	);
 };
