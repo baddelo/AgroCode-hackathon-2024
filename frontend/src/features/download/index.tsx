@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
+	selectOptionsGroupsFish,
 	setGroupsFish,
-	setOptionsGroupsFish,
-	selectOptionsGroupsFish
+	setOptionsGroupsFish
 } from '../../features/form/reducer.ts';
 import { toast } from 'react-toastify';
 import {
 	Box,
-	Typography,
-	Select,
-	MenuItem,
+	Button,
 	FormControl,
 	InputLabel,
-	Button
+	MenuItem,
+	Select,
+	Typography
 } from '@mui/material';
 
 function Download() {
@@ -26,16 +26,7 @@ function Download() {
 		axios
 			.get('http://87.251.79.100:8080/api/v1/groups')
 			.then(({ data }) => {
-				dispatch(
-					setOptionsGroupsFish(
-						data
-							.filter((item) => typeof item.id === 'string')
-							.map((item) => ({
-								value: item.id,
-								text: item.id
-							}))
-					)
-				);
+				dispatch(setOptionsGroupsFish(data));
 				dispatch(setGroupsFish(data));
 			})
 			.catch(() => {
@@ -76,7 +67,7 @@ function Download() {
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'column', p: 2 }}>
 			<Typography variant="h5" gutterBottom>
-				Выберите группу для скачивания файла
+        Выберите группу для скачивания файла
 			</Typography>
 			<FormControl fullWidth sx={{ mb: 3 }}>
 				<InputLabel id="group-select-label">Группа</InputLabel>

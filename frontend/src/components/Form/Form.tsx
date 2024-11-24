@@ -114,16 +114,7 @@ export const Form = () => {
 		axios
 			.get('http://87.251.79.100:8080/api/v1/groups')
 			.then(({ data }) => {
-				dispatch(
-					setOptionsGroupsFish(
-						data
-							.filter((item) => typeof item.id === 'string')
-							.map((item) => ({
-								value: item.id,
-								text: item.id
-							}))
-					)
-				);
+				dispatch(setOptionsGroupsFish(data));
 
 				dispatch(setGroupsFish(data));
 			})

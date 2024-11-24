@@ -3,7 +3,9 @@ import { IFormGroup } from '../../types';
 
 const initialState = {
 	groupsFish: [] as IFormGroup[],
-	optionsGroupsFish: [] as { value: string; text: string }[]
+	optionsGroupsFish: [] as { value: string; text: string }[],
+	optionsFatherGroups: [] as { value: string; text: string }[],
+	optionsMotherGroups: [] as { value: string; text: string }[]
 };
 
 const formSlice = createSlice({
@@ -15,12 +17,40 @@ const formSlice = createSlice({
 		},
 
 		setOptionsGroupsFish: (state, { payload }) => {
+			const groups = payload.filter((item) => typeof item.id === 'string');
+			const father = groups
+				.filter((item) => item.sex === 'М')
+				.map((item) => ({
+					value: item.id,
+					text: item.id
+				}));
+			const mother = groups
+				.filter((item) => item.sex === 'Ж')
+				.map((item) => ({
+					value: item.id,
+					text: item.id
+				}));
+
+			state.groupsFish = groups;
+
+			state.optionsFatherGroups = [
+				{ value: 'not', text: 'Не выбран' },
+				...father
+			];
+			state.optionsMotherGroups = [
+				{ value: 'not', text: 'Не выбран' },
+				...mother
+			];
+
 			state.optionsGroupsFish = [
 				{ value: 'not', text: 'Не выбран' },
-				...payload,
+				...payload.map((item) => ({
+					value: item.id,
+					text: item.id
+				}))
 			];
-		},
-	},
+		}
+	}
 });
 
 export const { setGroupsFish, setOptionsGroupsFish } = formSlice.actions;

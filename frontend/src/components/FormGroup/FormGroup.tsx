@@ -34,25 +34,18 @@ export const FormGroup: FC<IFormGroupProps> = () => {
     });
 
 	const dispatch = useAppDispatch();
-	const optionsGroupsFish = useAppSelector(
-		(store) => store.form.optionsGroupsFish
+	const optionsFatherGroups = useAppSelector(
+		(store) => store.form.optionsFatherGroups
+	);
+	const optionsMotherGroups = useAppSelector(
+		(store) => store.form.optionsMotherGroups
 	);
 
 	const getGroupsFish = () => {
 		return axios
 			.get('http://87.251.79.100:8080/api/v1/groups')
 			.then(({ data }) => {
-				dispatch(
-					setOptionsGroupsFish(
-						data
-							.filter((item) => typeof item.id === 'string')
-							.map((item) => ({
-								value: item.id,
-								text: item.id
-							}))
-					)
-				);
-
+				dispatch(setOptionsGroupsFish(data));
 				dispatch(setGroupsFish(data));
 			})
 			.catch(() => {
@@ -98,9 +91,7 @@ export const FormGroup: FC<IFormGroupProps> = () => {
 			}}
 			onSubmit={handleSubmit(onSubmit)}
 		>
-			<Typography variant="h5">
-				Добавить группу
-			</Typography>
+			<Typography variant="h5">Добавить группу</Typography>
 			<Box
 				maxWidth="17rem"
 				width="100%"
@@ -180,7 +171,7 @@ export const FormGroup: FC<IFormGroupProps> = () => {
 								inputRef={field.ref}
 								defaultValue={'not'}
 							>
-								{optionsGroupsFish.map((item, index) => (
+								{optionsFatherGroups.map((item, index) => (
 									<MenuItem key={index} value={item.value}>
 										{item.text}
 									</MenuItem>
@@ -203,7 +194,7 @@ export const FormGroup: FC<IFormGroupProps> = () => {
 								inputRef={field.ref}
 								defaultValue={'not'}
 							>
-								{optionsGroupsFish.map((item, index) => (
+								{optionsMotherGroups.map((item, index) => (
 									<MenuItem key={index} value={item.value}>
 										{item.text}
 									</MenuItem>
@@ -213,7 +204,9 @@ export const FormGroup: FC<IFormGroupProps> = () => {
 					/>
 				</FormControl>
 			</Box>
-			<Button variant='contained' type="submit">Отправить</Button>
+			<Button variant="contained" type="submit">
+        Отправить
+			</Button>
 		</form>
 	);
 };

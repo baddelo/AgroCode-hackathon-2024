@@ -3,120 +3,20 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box, Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { useAppDispatch, useAppSelector } from '../../store';
+import { useAppDispatch } from '../../store';
 import { setFishes } from '../../features/table/reducer.ts';
 import { useNavigate } from 'react-router-dom';
 
-const columns: GridColDef[] = [
-	{ field: 'id', headerName: 'ID', type: 'string', width: 110 },
-	{ field: 'weight', headerName: 'Вес', type: 'number', width: 110 },
-	{ field: 'length', headerName: 'Длина', type: 'number', width: 110 },
-	{
-		field: 'height',
-		headerName: 'Высота',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'thickness',
-		headerName: 'Толщина',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'egg_weight',
-		headerName: 'Вес икринки',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'eggs_weight',
-		headerName: 'Вес икры',
-		type: 'number',
-		width: 110
-	},
+const onOnePage = 30;
 
-	{
-		field: 'mother_id',
-		headerName: 'ID самки',
-		type: 'string',
-		width: 110
-	},
-	{
-		field: 'father_id',
-		headerName: 'ID самца',
-		type: 'string',
-		width: 110
-	},
-	{
-		field: 'k_upit',
-		headerName: 'К упитанности',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'i_tolsh',
-		headerName: 'И толщины',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'i_visots',
-		headerName: 'И высоты',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'dolya_icry',
-		headerName: 'Доля икры',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'work_plodovitost',
-		headerName: 'Рабочая плодовитость',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'otnosit_plodovitost',
-		headerName: 'Относительная плодовитость',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'index_reproduction',
-		headerName: 'Индекс репродуктивности',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'breed',
-		headerName: 'Порода',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'sex',
-		headerName: 'Пол',
-		type: 'number',
-		width: 110
-	},
-	{
-		field: 'predict_proba',
-		headerName: 'Вер. плем. потомства',
-		type: 'number',
-		width: 180
-	}
-];
+interface ITable {
+  rows: any;
+  columns: GridColDef[];
+}
 
-const onOnePage = 15;
-
-export const Table: FC = () => {
+export const Table: FC<ITable> = ({ rows, columns }) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-
-	const fishesStore = useAppSelector((s) => s.table.fishes);
 
 	useEffect(() => {
 		axios
@@ -131,9 +31,9 @@ export const Table: FC = () => {
 
 	return (
 		<>
-			<Box padding="16px 32px" width="100%">
+			<Box padding="16px 32px">
 				<DataGrid
-					rows={fishesStore}
+					rows={rows}
 					columns={columns}
 					hideFooter={true}
 					initialState={{

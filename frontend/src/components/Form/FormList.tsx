@@ -330,52 +330,7 @@ export const FormList: FC<IFormListProps> = ({
 				<Controller
 					name={`fishes.${index}.group_id`}
 					control={control}
-					render={({ field }) => (
-						<Select
-							value={field.value}
-							onChange={field.onChange}
-							inputRef={field.ref}
-							defaultValue={'not'}
-						>
-							{optionsGroupsFish.map((item, index) => (
-								<MenuItem key={index} value={item.value}>
-									{item.text}
-								</MenuItem>
-							))}
-						</Select>
-					)}
-				/>
-			</FormControl>
-
-			<FormControl variant="standard">
-				<InputLabel>Группа папы</InputLabel>
-
-				<Controller
-					name={`fishes.${index}.father_group`}
-					control={control}
-					render={({ field }) => (
-						<Select
-							value={field.value}
-							onChange={field.onChange}
-							inputRef={field.ref}
-							defaultValue={'not'}
-						>
-							{optionsGroupsFish.map((item, index) => (
-								<MenuItem key={index} value={item.value}>
-									{item.text}
-								</MenuItem>
-							))}
-						</Select>
-					)}
-				/>
-			</FormControl>
-
-			<FormControl variant="standard">
-				<InputLabel>Группа мамы</InputLabel>
-
-				<Controller
-					name={`fishes.${index}.mother_group`}
-					control={control}
+					rules={{ required: true }}
 					render={({ field }) => (
 						<Select
 							value={field.value}
