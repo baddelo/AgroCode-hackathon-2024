@@ -33,29 +33,29 @@ const columns: GridColDef[] = [
 
 const columnsFishes: GridColDef[] = [
 	{ field: 'id', headerName: 'ID', type: 'string', width: 110 },
-	{ field: 'weight', headerName: 'Вес', type: 'number', width: 110 },
-	{ field: 'length', headerName: 'Длина', type: 'number', width: 110 },
+	{ field: 'weight', headerName: 'Вес (г)', type: 'number', width: 110 },
+	{ field: 'length', headerName: 'Длина (см)', type: 'number', width: 110 },
 	{
 		field: 'height',
-		headerName: 'Высота',
+		headerName: 'Высота (см)',
 		type: 'number',
 		width: 110
 	},
 	{
 		field: 'thickness',
-		headerName: 'Толщина',
+		headerName: 'Толщина (см)',
 		type: 'number',
 		width: 110
 	},
 	{
 		field: 'egg_weight',
-		headerName: 'Вес икринки',
+		headerName: 'Вес икринки (мг)',
 		type: 'number',
 		width: 110
 	},
 	{
 		field: 'eggs_weight',
-		headerName: 'Вес икры',
+		headerName: 'Вес икры (г)',
 		type: 'number',
 		width: 110
 	},
@@ -76,7 +76,7 @@ const columnsFishes: GridColDef[] = [
 		field: 'k_upit',
 		headerName: 'К упитанности',
 		type: 'number',
-		width: 110
+		width: 130
 	},
 	{
 		field: 'i_tolsh',
@@ -92,25 +92,25 @@ const columnsFishes: GridColDef[] = [
 	},
 	{
 		field: 'dolya_icry',
-		headerName: 'Доля икры',
+		headerName: 'Доля икры (%)',
 		type: 'number',
-		width: 110
+		width: 130
 	},
 	{
 		field: 'work_plodovitost',
-		headerName: 'Рабочая плодовитость',
+		headerName: 'Рабочая плодовитость (тыс. шт)',
 		type: 'number',
 		width: 110
 	},
 	{
 		field: 'otnosit_plodovitost',
-		headerName: 'Относительная плодовитость',
+		headerName: 'Относительная плодовитость (шт/кг веса)',
 		type: 'number',
 		width: 110
 	},
 	{
 		field: 'index_reproduction',
-		headerName: 'Индекс репродуктивности',
+		headerName: 'Индекс репродуктивности (г/кг)',
 		type: 'number',
 		width: 110
 	},
@@ -128,9 +128,9 @@ const columnsFishes: GridColDef[] = [
 	},
 	{
 		field: 'predict_proba',
-		headerName: 'Вер. плем. потомства',
+		headerName: 'Вер. плем. потомства (%)',
 		type: 'number',
-		width: 180
+		width: 200
 	}
 ];
 

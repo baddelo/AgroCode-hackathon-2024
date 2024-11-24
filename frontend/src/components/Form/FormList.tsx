@@ -97,7 +97,7 @@ export const FormList: FC<IFormListProps> = ({
 			</FormControl> */}
 
 			<FormControl>
-				<InputLabel>Вес</InputLabel>
+				<InputLabel>Вес (г)</InputLabel>
 
 				<Controller
 					name={`fishes.${index}.weight`}
@@ -135,7 +135,7 @@ export const FormList: FC<IFormListProps> = ({
 			</FormControl>
 
 			<FormControl>
-				<InputLabel>Длина</InputLabel>
+				<InputLabel>Длина (см)</InputLabel>
 
 				<Controller
 					name={`fishes.${index}.length`}
@@ -173,7 +173,7 @@ export const FormList: FC<IFormListProps> = ({
 			</FormControl>
 
 			<FormControl>
-				<InputLabel>Высота</InputLabel>
+				<InputLabel>Высота (см)</InputLabel>
 
 				<Controller
 					name={`fishes.${index}.height`}
@@ -211,7 +211,7 @@ export const FormList: FC<IFormListProps> = ({
 			</FormControl>
 
 			<FormControl>
-				<InputLabel>Толщина</InputLabel>
+				<InputLabel>Толщина (см)</InputLabel>
 
 				<Controller
 					name={`fishes.${index}.thickness`}
@@ -249,7 +249,7 @@ export const FormList: FC<IFormListProps> = ({
 			</FormControl>
 
 			<FormControl>
-				<InputLabel>Вес икры</InputLabel>
+				<InputLabel>Вес икры (г)</InputLabel>
 
 				<Controller
 					name={`fishes.${index}.eggs_weight`}
@@ -287,7 +287,7 @@ export const FormList: FC<IFormListProps> = ({
 			</FormControl>
 
 			<FormControl>
-				<InputLabel>Вес икринки</InputLabel>
+				<InputLabel>Вес икринки (мг)</InputLabel>
 
 				<Controller
 					name={`fishes.${index}.egg_weight`}
