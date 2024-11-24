@@ -1,22 +1,21 @@
 import { FC, useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useAppDispatch } from '../../store';
 import { setFishes } from '../../features/table/reducer.ts';
-import { useNavigate } from 'react-router-dom';
 
 const onOnePage = 30;
 
 interface ITable {
   rows: any;
   columns: GridColDef[];
+  onCellClick?: (e: any) => void;
 }
 
-export const Table: FC<ITable> = ({ rows, columns }) => {
+export const Table: FC<ITable> = ({ rows, columns, onCellClick }) => {
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		axios
@@ -31,11 +30,12 @@ export const Table: FC<ITable> = ({ rows, columns }) => {
 
 	return (
 		<>
-			<Box padding="16px 32px">
+			<Box>
 				<DataGrid
 					rows={rows}
 					columns={columns}
 					hideFooter={true}
+					onCellClick={onCellClick}
 					initialState={{
 						pagination: {
 							paginationModel: {
@@ -47,13 +47,6 @@ export const Table: FC<ITable> = ({ rows, columns }) => {
 					pageSizeOptions={[5, 10]}
 				/>
 			</Box>
-			<Button
-				onClick={() => navigate('/download')}
-				variant="contained"
-				sx={{ mt: 2 }}
-			>
-        Скачать таблицу
-			</Button>
 		</>
 	);
 };

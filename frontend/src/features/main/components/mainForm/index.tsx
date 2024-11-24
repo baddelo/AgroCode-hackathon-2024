@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button, Typography } from '@mui/material';
 import SetMealIcon from '@mui/icons-material/SetMeal';
+
 function MainForm() {
 	const navigate = useNavigate();
 
@@ -19,8 +20,10 @@ function MainForm() {
 			}}
 			onClick={() => navigate('/form')}
 		>
-			<SetMealIcon color='primary' sx={{ width: '64px', height: '64px' }} />
-			<Typography variant="h6" color="primary">Бонитировка</Typography>
+			<SetMealIcon color="primary" sx={{ width: '64px', height: '64px' }} />
+			<Typography variant="h6" color="primary">
+        Бонификация
+			</Typography>
 		</Button>
 	);
 }

@@ -1,11 +1,12 @@
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { Table } from '../../components';
 import { useAppSelector } from '../../store';
 import { GridColDef } from '@mui/x-data-grid';
+import { useNavigate } from 'react-router-dom';
 
 // import Tree from '../../features/tree';
 
-const columns: GridColDef[] = [
+export const columnsFishes: GridColDef[] = [
 	{ field: 'id', headerName: 'ID', type: 'string', width: 110 },
 	{ field: 'weight', headerName: 'Вес', type: 'number', width: 110 },
 	{ field: 'length', headerName: 'Длина', type: 'number', width: 110 },
@@ -110,6 +111,7 @@ const columns: GridColDef[] = [
 
 function GraphPage() {
 	const fishesStore = useAppSelector((s) => s.table.fishes);
+	const navigate = useNavigate();
 
 	return (
 		<Box
@@ -119,7 +121,17 @@ function GraphPage() {
 			p="32px"
 			width="100%"
 		>
-			<Table rows={fishesStore || []} columns={columns} />
+			<Box width="90%">
+				<Table rows={fishesStore || []} columns={columnsFishes} />
+
+				<Button
+					onClick={() => navigate('/download')}
+					variant="contained"
+					sx={{ mt: 2 }}
+				>
+          Скачать таблицу
+				</Button>
+			</Box>
 			{/* <Tree /> */}
 		</Box>
 	);
