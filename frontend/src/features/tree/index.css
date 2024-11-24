@@ -1,0 +1,15 @@
+.react-d3-tree-node {
+  fill: #3498db;
+  stroke: #2980b9;
+  stroke-width: 2;
+}
+
+.react-d3-tree-link {
+  stroke: #2980b9;
+  stroke-width: 2;
+}
+
+.react-d3-tree-label {
+  font-size: 14px;
+  fill: #fff;
+}

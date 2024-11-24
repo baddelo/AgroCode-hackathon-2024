@@ -1,155 +1,124 @@
-// import React, { useEffect, useState } from 'react';
-// import ReactFlow, {
-// 	addEdge,
-// 	Background,
-// 	Controls,
-// 	Edge,
-// 	Node,
-// 	OnConnect
-// } from 'reactflow';
-// import 'reactflow/dist/style.css';
+import './index.css';
 
-// interface Fish {
-//   id: string;
-//   weight: number;
-//   length: number;
-//   height: number;
-//   thickness: number;
-//   eggs_weight: number;
-//   egg_weight: number;
-// }
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Tree from 'react-d3-tree';
 
-// interface Group {
-//   id: string;
-//   breed: string;
-//   sex: string;
-// }
+interface Fish {
+  id: string;
+  weight: number;
+  length: number;
+  height: number;
+  thickness: number;
+  eggs_weight: number;
+  egg_weight: number;
+}
 
-// interface NodeData {
-//   fish: Fish;
-//   group: Group;
-// }
+interface Group {
+  id: string;
+  breed: string;
+  sex: string;
+}
 
-// interface BackendNode {
-//   id: number;
-//   data: NodeData[];
-// }
+interface NodeData {
+  fish: Fish | null;
+  group: Group | null;
+}
 
-// interface BackendEdge {
-//   id: number;
-//   source: number;
-//   target: number;
-// }
+interface BackendNode {
+  id: number;
+  data: NodeData[];
+}
 
-// interface BackendResponse {
-//   nodes: BackendNode[];
-//   edges: BackendEdge[];
-// }
+interface BackendEdge {
+  id: number;
+  source: number;
+  target: number;
+}
 
-// const fetchTreeData = async (): Promise<BackendResponse> => {
-// 	const response = await fetch('/api/tree-data.json');
-// 	return response.json();
-// };
+interface BackendResponse {
+  nodes: BackendNode[];
+  edges: BackendEdge[];
+}
 
-// const calculateNodePositions = (
-// 	nodes: BackendNode[],
-// 	edges: BackendEdge[]
-// ): Node[] => {
-// 	const nodeLevels: Map<number, number> = new Map();
-// 	const positions: Node[] = [];
-// 	const levelSpacing = 150;
-// 	const horizontalSpacing = 200;
+const fetchTreeData = async (): Promise<BackendResponse> => {
+	const response = await axios.get('http://87.251.79.100:8080/api/v1/generations');
+	return response.data;
+};
 
-// 	const childIds = new Set(edges.map((edge) => edge.target));
-// 	const rootNodes = nodes.filter((node) => !childIds.has(node.id));
+const convertDataForTree = (nodes: BackendNode[], edges: BackendEdge[]) => {
+	const nodeMap = new Map<number, any>();
+  
+	nodes.forEach((node) => {
+		nodeMap.set(node.id, {
+			name: node.data[0].group
+				? `${node.data[0].group.breed} (${node.data[0].group.sex})`
+				: node.data[0].fish
+					? `Fish: ${node.data[0].fish.id}`
+					: 'Child',
+			children: [],
+			isParent: false
+		});
+	});
 
-// 	rootNodes.forEach((node, index) => {
-// 		nodeLevels.set(node.id, 0);
-// 		positions.push({
-// 			id: String(node.id),
-// 			data: {
-// 				label: `${node.data[0].group.breed} (${node.data[0].group.sex})`,
-// 				details: node.data[0]
-// 			},
-// 			position: { x: index * horizontalSpacing, y: 0 }
-// 		});
-// 	});
+	edges.forEach((edge) => {
+		const parentNode = nodeMap.get(edge.source);
+		const childNode = nodeMap.get(edge.target);
 
-// 	const placeChildren = (parentId: number, level: number, xOffset: number) => {
-// 		const children = edges
-// 			.filter((edge) => edge.source === parentId)
-// 			.map((edge) => edge.target);
+		if (parentNode && childNode) {
+			parentNode.children.push(childNode);
+			parentNode.isParent = true;
+		}
+	});
 
-// 		let xPosition = xOffset;
+	const rootNodes = nodes.filter((node) => !edges.some((edge) => edge.target === node.id));
+	return rootNodes.map((root) => nodeMap.get(root.id));
+};
 
-// 		children.forEach((childId) => {
-// 			const yPosition = (level + 1) * levelSpacing;
+const TreeComponent: React.FC = () => {
+	const [treeData, setTreeData] = useState<any>(null);
 
-// 			nodeLevels.set(childId, level + 1);
-// 			const childNode = nodes.find((node) => node.id === childId);
-// 			if (childNode) {
-// 				positions.push({
-// 					id: String(childId),
-// 					data: {
-// 						label: `${childNode.data[0].group.breed} (${childNode.data[0].group.sex})`,
-// 						details: childNode.data[0]
-// 					},
-// 					position: { x: xPosition, y: yPosition }
-// 				});
+	useEffect(() => {
+		const loadTreeData = async () => {
+			try {
+				const data = await fetchTreeData();
+				const formattedTreeData = convertDataForTree(data.nodes, data.edges);
+				setTreeData(formattedTreeData);
+			} catch (error) {
+				console.error('Error loading tree data:', error);
+			}
+		};
 
-// 				xPosition += horizontalSpacing;
-// 			}
+		loadTreeData();
+	}, []);
 
-// 			placeChildren(childId, level + 1, xPosition);
-// 		});
-// 	};
+	if (!treeData) {
+		return <div>Загрузка...</div>;
+	}
 
-// 	rootNodes.forEach((root) => placeChildren(root.id, 0, 0));
+	return (
+		<div style={{ border: '1px solid #ccc', width: '80%', height: '600px' }}>
+			<Tree
+				data={treeData}
+				orientation="vertical"
+				nodeSize={{ x: 200, y: 100 }}
+				separation={{ siblings: 1, nonSiblings: 2 }}
+				pathFunc="step"
+				renderCustomNodeElement={({ nodeDatum }) => {
+					const nodeColor = nodeDatum.isParent ? '#ff5733' : '#3498db';
 
-// 	return positions;
-// };
+					return (
+						<g>
+							<circle r={30} fill={nodeColor} />
+							<text fill="white" fontSize="12" textAnchor="middle" dy={5}>
+								{nodeDatum.name}
+							</text>
+						</g>
+					);
+				}}
+			/>
+		</div>
+	);
+};
 
-
-// const Tree: React.FC = () => {
-// 	const [nodes, setNodes] = useState<Node[]>([]);
-// 	const [edges, setEdges] = useState<Edge[]>([]);
-
-// 	useEffect(() => {
-// 		const loadTreeData = async () => {
-// 			const data = await fetchTreeData();
-
-// 			const formattedNodes = calculateNodePositions(data.nodes, data.edges);
-
-// 			const formattedEdges = data.edges.map((edge) => ({
-// 				id: String(edge.id),
-// 				source: String(edge.source),
-// 				target: String(edge.target)
-// 			}));
-
-// 			setNodes(formattedNodes);
-// 			setEdges(formattedEdges);
-// 		};
-
-// 		loadTreeData();
-// 	}, []);
-
-// 	const onConnect: OnConnect = (params) =>
-// 		setEdges((eds) => addEdge(params, eds));
-
-// 	return (
-// 		<div style={{ height: '100vh', width: '100%' }}>
-// 			<ReactFlow
-// 				nodes={nodes}
-// 				edges={edges}
-// 				onConnect={onConnect}
-// 				fitView
-// 				attributionPosition="top-right"
-// 			>
-// 				<Background />
-// 				<Controls />
-// 			</ReactFlow>
-// 		</div>
-// 	);
-// };
-
-// export default Tree;
+export default TreeComponent;
