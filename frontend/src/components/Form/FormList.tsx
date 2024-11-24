@@ -88,13 +88,13 @@ export const FormList: FC<IFormListProps> = ({
 			<Typography sx={{ textAlign: 'center' }} variant="h5">
         Рыба №{index + 1}
 			</Typography>
-			<FormControl>
+			{/* <FormControl>
 				<InputLabel>Идентификатор</InputLabel>
 				<Input
 					{...register(`fishes.${index}.id`)}
 					error={Boolean(currentErrors?.id?.type)}
 				/>
-			</FormControl>
+			</FormControl> */}
 
 			<FormControl>
 				<InputLabel>Вес</InputLabel>

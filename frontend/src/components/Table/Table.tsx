@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { setFishes } from '../../features/table/reducer.ts';
+import { useNavigate } from 'react-router-dom';
 
 const columns: GridColDef[] = [
 	{ field: 'id', headerName: 'ID', type: 'string', width: 110 },
@@ -113,6 +114,7 @@ const onOnePage = 15;
 
 export const Table: FC = () => {
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const fishesStore = useAppSelector((s) => s.table.fishes);
 
@@ -146,7 +148,7 @@ export const Table: FC = () => {
 				/>
 			</Box>
 			<Button
-				href="http://87.251.79.100:8080/api/v1/excel/download/by-group"
+				onClick={() => navigate('/download')}
 				variant="contained"
 				sx={{ mt: 2 }}
 			>

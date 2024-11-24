@@ -113,7 +113,7 @@ export const FormGroup: FC<IFormGroupProps> = () => {
 				boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
 			>
 				<FormControl>
-					<InputLabel>Идентификатор</InputLabel>
+					<InputLabel>Номер группы</InputLabel>
 
 					<Controller
 						name={'id'}

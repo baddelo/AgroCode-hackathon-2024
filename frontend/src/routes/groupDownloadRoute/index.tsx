@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import Download from '../../features/download';
 
-function GroupDownloadPage() {
+function GroupDownloadRoute() {
 	return (
 		<Box display="flex" flexDirection="column" justifyContent='center' alignItems="center" gap="50px" padding="16px">
 			<Download />
@@ -9,4 +9,4 @@ function GroupDownloadPage() {
 	);
 }
 
-export default GroupDownloadPage;
+export default GroupDownloadRoute;

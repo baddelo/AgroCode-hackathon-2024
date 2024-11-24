@@ -4,6 +4,7 @@ import MainGroup from '../mainGroup';
 import MainUploader from '../mainUploader';
 import MainForm from '../mainForm';
 import MainGraph from '../mainGraph';
+import MainList from '../mainList';
 
 function MainBlock() {
 	return (
@@ -26,6 +27,7 @@ function MainBlock() {
 				gap='1rem'
 			>
 				<MainForm />
+				<MainList />
 				<MainGraph />
 			</Box>
 		</>

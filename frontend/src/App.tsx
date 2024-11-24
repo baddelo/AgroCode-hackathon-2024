@@ -10,7 +10,8 @@ import FormRoute from './routes/formRoute';
 import GraphRoute from './routes/graphRoute';
 import GroupRoute from './routes/groupRoute';
 import UploaderRoute from './routes/uploaderRoute';
-import GroupDownloadPage from './routes/groupDownloadRoute';
+import GroupDownloadRoute from './routes/groupDownloadRoute';
+import ListRoute from './routes/listRoute';
 
 function App() {
 	return (
@@ -22,7 +23,8 @@ function App() {
 					<Route path="/graph" element={<GraphRoute />} />
 					<Route path="/group" element={<GroupRoute />} />
 					<Route path="/uploader" element={<UploaderRoute />} />
-					<Route path="/download" element={<GroupDownloadPage />} />
+					<Route path="/download" element={<GroupDownloadRoute />} />
+					<Route path="/list" element={<ListRoute />} />
 					<Route path="*" element={<Navigate to="/" replace />} />
 				</Route>
 			</Routes>

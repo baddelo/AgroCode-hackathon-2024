@@ -93,15 +93,23 @@ function Download() {
 					))}
 				</Select>
 			</FormControl>
-
-			<Button
-				variant="contained"
-				color="primary"
-				onClick={handleDownload}
-				disabled={!selectedGroup || selectedGroup === 'not'}
-			>
-				Скачать файл
-			</Button>
+			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, justifyContent: 'space-between' }}>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={handleDownload}
+					disabled={!selectedGroup || selectedGroup === 'not'}
+				>
+					Скачать файл
+				</Button>
+				<Button
+					href="http://87.251.79.100:8080/api/v1/excel/download/generations"
+					variant="contained"
+					color="primary"
+				>
+					Скачать файл поколений
+				</Button>
+			</Box>
 		</Box>
 	);
 }
