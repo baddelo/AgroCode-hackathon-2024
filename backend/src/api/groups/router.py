@@ -22,7 +22,7 @@ async def create_group_endpoint(
 
 
 
-@groups_rest_v1.put(
+@groups_rest_v1.get(
     path='',
     status_code=status.HTTP_200_OK,
     response_model=List[GroupGetDTO],

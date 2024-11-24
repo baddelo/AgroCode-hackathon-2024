@@ -76,6 +76,9 @@ class FishGetDTO(ABCDTO):
     eggs_weight: float | None = Field(None)
     egg_weight: float | None = Field(None)
 
+    mother_id: str | None = Field(None)
+    father_id: str | None = Field(None)
+
     k_upit: float | None = Field(None)
     i_tolsh: float | None = Field(None)
     i_visots: float | None = Field(None)
@@ -86,6 +89,8 @@ class FishGetDTO(ABCDTO):
 
     breed: str | None = Field(None)
     sex: str | None = Field(None)
+
+    predict_proba: float | None = Field(None)
 
     @model_validator(mode='after')
     def after_validator(self) -> Self:
@@ -119,3 +124,9 @@ class FishGetDTO(ABCDTO):
 class OrdersDTO(ABCDTO):
     direction: Literal['ASC', 'DESC']
     field: Literal['weight', 'height', 'length', 'thickness', 'eggs_weight', 'egg_weight', 'height']
+
+
+class HistoryDTO(ABCDTO):
+    id: str
+    mother_id: str | None = None
+    father_id: str | None = None

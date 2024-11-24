@@ -2,7 +2,8 @@ import uuid
 from typing import List
 
 from src.domain.group.dal import GroupDAO
-from src.domain.group.dto import GroupCreateDTO, GroupOrdersDTO, GroupGetDTO
+from src.domain.group.dto import GroupCreateDTO, GroupGetDTO
+from src.domain.group.exception import MALE_ERROR, FEMALE_ERROR
 
 
 async def create_group(group_data: GroupCreateDTO):
@@ -10,9 +11,15 @@ async def create_group(group_data: GroupCreateDTO):
     if father_group is None:
         group_data.father_group = None
 
+    if father_group.sex != 'М':
+        raise MALE_ERROR
+
     mother_group = await GroupDAO().get_by_id(group_data.mother_group)
     if mother_group is None:
         group_data.mother_group = None
+
+    if mother_group.sex != 'Ж':
+        raise FEMALE_ERROR
 
     group = await GroupDAO().get_by_id(group_data.id)
     if group is not None:
