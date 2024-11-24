@@ -20,7 +20,7 @@ function MainGraph() {
 			onClick={() => navigate('/graph')}
 		>
 			<AutoGraphIcon color='primary' sx={{ width: '64px', height: '64px' }} />
-			<Typography variant="h6" color="primary">Графы</Typography>
+			<Typography variant="h6" color="primary">Родословные</Typography>
 		</Button>
 	);
 }

@@ -20,7 +20,7 @@ function MainForm() {
 			onClick={() => navigate('/form')}
 		>
 			<SetMealIcon color='primary' sx={{ width: '64px', height: '64px' }} />
-			<Typography variant="h6" color="primary">Бонификация</Typography>
+			<Typography variant="h6" color="primary">Бонитировка</Typography>
 		</Button>
 	);
 }
