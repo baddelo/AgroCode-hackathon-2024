@@ -3,7 +3,7 @@ import { IFormGroup } from '../../types';
 
 const initialState = {
 	groupsFish: [] as IFormGroup[],
-	optionsGroupsFish: [] as { value: string; text: string }
+	optionsGroupsFish: [] as { value: string; text: string }[]
 };
 
 const formSlice = createSlice({
@@ -17,11 +17,18 @@ const formSlice = createSlice({
 		setOptionsGroupsFish: (state, { payload }) => {
 			state.optionsGroupsFish = [
 				{ value: 'not', text: 'Не выбран' },
-				...payload
+				...payload,
 			];
-		}
-	}
+		},
+	},
 });
 
 export const { setGroupsFish, setOptionsGroupsFish } = formSlice.actions;
+
+export const selectGroupsFish = (state: { form: typeof initialState }) =>
+	state.form.groupsFish;
+
+export const selectOptionsGroupsFish = (state: { form: typeof initialState }) =>
+	state.form.optionsGroupsFish;
+
 export const formReducer = formSlice.reducer;

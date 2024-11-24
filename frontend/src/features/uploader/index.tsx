@@ -60,7 +60,7 @@ const Uploader: React.FC = () => {
 			}
 
 			alert('Все файлы успешно загружены!');
-			navigate('/graph');
+			navigate('/download');
 			setFiles([]);
 		} catch (error) {
 			console.error('Ошибка при загрузке файлов:', error);
