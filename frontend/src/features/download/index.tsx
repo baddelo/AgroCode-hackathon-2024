@@ -100,13 +100,13 @@ function Download() {
 				>
           Скачать файл
 				</Button>
-				<Button
+				{/* <Button
 					href="http://87.251.79.100:8080/api/v1/excel/download/generations"
 					variant="contained"
 					color="primary"
 				>
           Скачать файл поколений
-				</Button>
+				</Button> */}
 			</Box>
 		</Box>
 	);
