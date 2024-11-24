@@ -32,7 +32,7 @@ const columns: GridColDef[] = [
 ];
 
 const columnsFishes: GridColDef[] = [
-	{ field: 'id', headerName: 'ID', type: 'string', width: 110 },
+	// { field: 'id', headerName: 'ID', type: 'string', width: 110 },
 	{ field: 'weight', headerName: 'Вес (г)', type: 'number', width: 110 },
 	{ field: 'length', headerName: 'Длина (см)', type: 'number', width: 110 },
 	{
