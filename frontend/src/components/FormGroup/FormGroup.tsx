@@ -18,6 +18,7 @@ import {
 	setOptionsGroupsFish
 } from '../../features/form/reducer.ts';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface IFormGroupProps {}
 
@@ -34,6 +35,8 @@ export const FormGroup: FC<IFormGroupProps> = () => {
     });
 
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
 	const optionsFatherGroups = useAppSelector(
 		(store) => store.form.optionsFatherGroups
 	);
@@ -65,8 +68,9 @@ export const FormGroup: FC<IFormGroupProps> = () => {
 		axios
 			.post('http://87.251.79.100:8080/api/v1/groups', value)
 			.then(() => {
-				getGroupsFish();
-				form.reset();
+				navigate('/list');
+				// getGroupsFish();
+				// form.reset();
 
 				toast.success('Успешно отправлено');
 			})
@@ -104,7 +108,7 @@ export const FormGroup: FC<IFormGroupProps> = () => {
 				boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
 			>
 				<FormControl>
-					<InputLabel>Номер группы</InputLabel>
+					<InputLabel>Название группы</InputLabel>
 
 					<Controller
 						name={'id'}

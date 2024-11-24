@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Typography } from '@mui/material';
-import ViewListIcon from '@mui/icons-material/ViewList';
+import SetMealIcon from '@mui/icons-material/SetMeal';
 
 function MainList() {
 	const navigate = useNavigate();
@@ -20,8 +20,11 @@ function MainList() {
 			}}
 			onClick={() => navigate('/list')}
 		>
-			<ViewListIcon color='primary' sx={{ width: '64px', height: '64px' }} />
-			<Typography variant="h6" color="primary">Список групп</Typography>
+			<SetMealIcon color="primary" sx={{ width: '64px', height: '64px' }} />
+
+			<Typography variant="h6" color="primary">
+        Рыбы
+			</Typography>
 		</Button>
 	);
 }

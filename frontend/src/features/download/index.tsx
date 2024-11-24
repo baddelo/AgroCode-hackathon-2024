@@ -53,7 +53,7 @@ function Download() {
 				const url = window.URL.createObjectURL(new Blob([response.data]));
 				const link = document.createElement('a');
 				link.href = url;
-				link.setAttribute('download', `group_${selectedGroup}.xls`);
+				link.setAttribute('download', `group_${selectedGroup}.xlsx`);
 				document.body.appendChild(link);
 				link.click();
 				link.remove();
@@ -84,21 +84,28 @@ function Download() {
 					))}
 				</Select>
 			</FormControl>
-			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, justifyContent: 'space-between' }}>
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					gap: 1,
+					justifyContent: 'space-between'
+				}}
+			>
 				<Button
 					variant="contained"
 					color="primary"
 					onClick={handleDownload}
 					disabled={!selectedGroup || selectedGroup === 'not'}
 				>
-					Скачать файл
+          Скачать файл
 				</Button>
 				<Button
 					href="http://87.251.79.100:8080/api/v1/excel/download/generations"
 					variant="contained"
 					color="primary"
 				>
-					Скачать файл поколений
+          Скачать файл поколений
 				</Button>
 			</Box>
 		</Box>
