@@ -11,10 +11,10 @@ import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { GridColDef } from '@mui/x-data-grid';
 import { IFishes } from '../../types';
-import { columnsFishes } from '../graphRoute';
+import { useNavigate } from 'react-router-dom';
 
 const columns: GridColDef[] = [
-	{ field: 'id', headerName: 'Номер группы', type: 'number', width: 200 },
+	{ field: 'id', headerName: 'Название группы', type: 'number', width: 200 },
 	{ field: 'breed', headerName: 'Вид', type: 'string', width: 110 },
 	{
 		field: 'father_group',
@@ -31,11 +31,115 @@ const columns: GridColDef[] = [
 	{ field: 'sex', headerName: 'Пол', type: 'number', width: 110 }
 ];
 
+const columnsFishes: GridColDef[] = [
+	{ field: 'id', headerName: 'ID', type: 'string', width: 110 },
+	{ field: 'weight', headerName: 'Вес', type: 'number', width: 110 },
+	{ field: 'length', headerName: 'Длина', type: 'number', width: 110 },
+	{
+		field: 'height',
+		headerName: 'Высота',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'thickness',
+		headerName: 'Толщина',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'egg_weight',
+		headerName: 'Вес икринки',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'eggs_weight',
+		headerName: 'Вес икры',
+		type: 'number',
+		width: 110
+	},
+
+	{
+		field: 'mother_id',
+		headerName: 'ID самки',
+		type: 'string',
+		width: 110
+	},
+	{
+		field: 'father_id',
+		headerName: 'ID самца',
+		type: 'string',
+		width: 110
+	},
+	{
+		field: 'k_upit',
+		headerName: 'К упитанности',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'i_tolsh',
+		headerName: 'И толщины',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'i_visots',
+		headerName: 'И высоты',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'dolya_icry',
+		headerName: 'Доля икры',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'work_plodovitost',
+		headerName: 'Рабочая плодовитость',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'otnosit_plodovitost',
+		headerName: 'Относительная плодовитость',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'index_reproduction',
+		headerName: 'Индекс репродуктивности',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'breed',
+		headerName: 'Порода',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'sex',
+		headerName: 'Пол',
+		type: 'number',
+		width: 110
+	},
+	{
+		field: 'predict_proba',
+		headerName: 'Вер. плем. потомства',
+		type: 'number',
+		width: 180
+	}
+];
+
 function ListRoute() {
 	const dispatch = useAppDispatch();
 	const optionsGroupsFish = useAppSelector(selectGroupsFish);
 	const [group, setGroup] = useState<IFishes | null>(null);
 	const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		axios
@@ -98,8 +202,16 @@ function ListRoute() {
 			alignItems="center"
 			p="32px"
 			width="100%"
+			gap="20px"
 		>
-			<Typography variant="h3">Список групп</Typography>
+			<Button
+				onClick={() => {
+					navigate('/group');
+				}}
+				variant="contained"
+			>
+        Добавить группу
+			</Button>
 
 			<Table
 				rows={optionsGroupsFish || []}

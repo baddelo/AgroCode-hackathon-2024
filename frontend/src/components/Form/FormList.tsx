@@ -325,7 +325,7 @@ export const FormList: FC<IFormListProps> = ({
 			</FormControl>
 
 			<FormControl variant="standard">
-				<InputLabel>Номер группы</InputLabel>
+				<InputLabel>Название группы</InputLabel>
 
 				<Controller
 					name={`fishes.${index}.group_id`}
